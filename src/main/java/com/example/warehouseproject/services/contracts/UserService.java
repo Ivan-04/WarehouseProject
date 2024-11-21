@@ -8,7 +8,7 @@ import com.example.warehouseproject.models.dtos.UserOutputId;
 import java.util.List;
 
 public interface UserService {
-    List<User> findAll();
+    List<UserOutput> findAll();
 
     UserOutput findUserById(int id);
 

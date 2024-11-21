@@ -13,6 +13,7 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,8 +25,13 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public List<User> findAll() {
-        return userRepository.findAll();
+    public List<UserOutput> findAll() {
+        List<User> listOfUsers = userRepository.findAll();
+        List<UserOutput> listOfUserOutputs = new ArrayList<>();
+        for (User user : listOfUsers){
+            listOfUserOutputs.add(conversionService.convert(user, UserOutput.class));
+        }
+        return listOfUserOutputs;
     }
 
     @Override

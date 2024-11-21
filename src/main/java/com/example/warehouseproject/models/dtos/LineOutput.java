@@ -5,12 +5,19 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserOutputId {
+public class LineOutput {
 
-    private int userId;
+    private int num;
+
+    private String description;
+
+    private LocalDateTime date;
 
 }
