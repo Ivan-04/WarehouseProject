@@ -29,6 +29,13 @@ CREATE TABLE parts (
                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE warehouse (
+                           id INT AUTO_INCREMENT PRIMARY KEY,
+                           part_id INT NOT NULL,
+                           quantity INT NOT NULL CHECK (quantity > 0),
+                           FOREIGN KEY (part_id) REFERENCES parts(id) ON DELETE CASCADE
+);
+
 CREATE TABLE lineParts (
                            id INT AUTO_INCREMENT PRIMARY KEY,
                            line_id INT NOT NULL,
