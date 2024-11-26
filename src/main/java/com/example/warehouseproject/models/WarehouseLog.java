@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "logs")
+@Table(name = "warehouse_logs")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Log {
+public class WarehouseLog {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,8 +26,8 @@ public class Log {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "line_id", nullable = false)
-    private Line line;
+    @JoinColumn(name = "warehouse_id", nullable = false)
+    private Warehouse warehouse;
 
     @ManyToOne
     @JoinColumn(name = "part_id", nullable = false)
