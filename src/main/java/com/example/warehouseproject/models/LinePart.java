@@ -6,23 +6,27 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Entity
-@Table(name = "warehouse")
+@Table(name = "lineparts")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Warehouse {
+public class LinePart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, unique = true)
-    private int warehouseId;
+    private int id;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+    @ManyToOne
+    @JoinColumn(name = "line_id", nullable = false)
+    private Warehouse warehouse;
 
+    @ManyToOne
+    @JoinColumn(name = "part_id", nullable = false)
+    private Part part;
 
+    @Column(name = "quantity", nullable = false)
+    private int quantity;
 }
