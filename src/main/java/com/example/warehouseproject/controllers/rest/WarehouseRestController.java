@@ -4,6 +4,7 @@ import com.example.warehouseproject.models.dtos.*;
 import com.example.warehouseproject.services.contracts.WarehouseService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,5 +35,12 @@ public class WarehouseRestController {
     @PostMapping
     public ResponseEntity<WarehouseOutputId> createWarehouse(@Valid @RequestBody WarehouseInput warehouseInput) {
         return ResponseEntity.ok(warehouseService.createWarehouse(warehouseInput));
+    }
+
+    @PostMapping("/add/part/warehouse")
+    public  ResponseEntity<String> addPartToWarehouse(@RequestParam String warehouseName, String partTitle,
+                                                      int quantityOfPAart){
+        warehouseService.addPartToWarehouse(warehouseName, partTitle, quantityOfPAart);
+        return new ResponseEntity<>("Successfully added part!", HttpStatus.OK);
     }
 }

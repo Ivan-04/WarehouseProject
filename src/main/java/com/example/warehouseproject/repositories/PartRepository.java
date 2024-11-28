@@ -20,4 +20,7 @@ public interface PartRepository extends JpaRepository<Part, Integer> {
 
     Part findPartEntityByTitle(String title);
 
+    Part findPartEntityByPartId(int id);
+
+
 }

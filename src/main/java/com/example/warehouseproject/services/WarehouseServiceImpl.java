@@ -2,9 +2,13 @@ package com.example.warehouseproject.services;
 
 import com.example.warehouseproject.exceptions.DuplicateEntityException;
 import com.example.warehouseproject.exceptions.EntityNotFoundException;
+import com.example.warehouseproject.models.Part;
 import com.example.warehouseproject.models.Warehouse;
+import com.example.warehouseproject.models.WarehousePart;
 import com.example.warehouseproject.models.dtos.*;
 import com.example.warehouseproject.repositories.WarehouseRepository;
+import com.example.warehouseproject.services.contracts.PartService;
+import com.example.warehouseproject.services.contracts.WarehousePartService;
 import com.example.warehouseproject.services.contracts.WarehouseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
@@ -19,6 +23,8 @@ public class WarehouseServiceImpl implements WarehouseService {
 
     private final WarehouseRepository warehouseRepository;
     private final ConversionService conversionService;
+    private final WarehousePartService warehousePartService;
+    private final PartService partService;
 
     @Override
     public List<WarehouseOutput> findAllWarehouses() {
@@ -33,6 +39,13 @@ public class WarehouseServiceImpl implements WarehouseService {
                 () -> new EntityNotFoundException("Warehouse", id));
 
         return conversionService.convert(warehouse, WarehouseOutput.class);
+    }
+
+    @Override
+    public Warehouse findWarehouseEntityById(int id){
+
+        return warehouseRepository.findByWarehouseId(id).orElseThrow(
+                () -> new EntityNotFoundException("Warehouse", id));
     }
 
     @Override
@@ -61,4 +74,35 @@ public class WarehouseServiceImpl implements WarehouseService {
         return conversionService.convert(warehouse, WarehouseOutputId.class);
     }
 
+
+    @Override
+    public void addPartToWarehouse(String warehouseName, String partTitle, int quantityOfPart) {
+
+        List<WarehousePartOutput> warehousePartOutputs = warehousePartService.findAllWarehousesParts();
+
+        for (WarehousePartOutput warehousePartOutput : warehousePartOutputs) {
+            if (warehousePartOutput.getPartName().equals(partTitle) &&
+                    warehousePartOutput.getWarehouseName().equals(warehouseName)){
+                Warehouse warehouse = warehouseRepository.findWarehouseEntityByName(warehouseName);
+                Part part = partService.getPartEntity(partTitle);
+
+                WarehousePart warehousePart = warehousePartService.findWarehousePart(warehouse, part);
+                warehousePartService.changeTheQuantity(warehousePart, quantityOfPart);
+            }else {
+
+                Warehouse warehouse = warehouseRepository.findWarehouseEntityByName(warehouseName);
+                Part part = partService.getPartEntity(partTitle);
+
+                warehousePartService.createWarehouse(warehouse, part, quantityOfPart);
+            }
+        }
+
+        if (warehousePartOutputs.isEmpty()){
+            Warehouse warehouse = warehouseRepository.findWarehouseEntityByName(warehouseName);
+            Part part = partService.getPartEntity(partTitle);
+
+            warehousePartService.createWarehouse(warehouse, part, quantityOfPart);
+        }
+
+    }
 }

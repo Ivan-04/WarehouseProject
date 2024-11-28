@@ -19,4 +19,6 @@ public interface WarehouseRepository  extends JpaRepository<Warehouse, Integer> 
 
     Warehouse findWarehouseEntityByName(String name);
 
+    Warehouse findWarehouseEntityByWarehouseId(int id);
+
 }

@@ -37,6 +37,13 @@ public class PartServiceImpl implements PartService {
     }
 
     @Override
+    public Part findPartEntityById(int id){
+
+        return partRepository.findPartByPartId(id).orElseThrow(
+                () -> new EntityNotFoundException("Part", id));
+    }
+
+    @Override
     public PartOutput findPartByTitle(String title){
         Part part = partRepository.findPartByTitle(title).orElseThrow(
                 () -> new EntityNotFoundException("Part", "title",title));
@@ -63,6 +70,11 @@ public class PartServiceImpl implements PartService {
         partRepository.save(part);
 
         return conversionService.convert(part, PartOutputId.class);
+    }
+
+    @Override
+    public Part getPartEntity(String title){
+       return partRepository.findPartEntityByTitle(title);
     }
 
 }
