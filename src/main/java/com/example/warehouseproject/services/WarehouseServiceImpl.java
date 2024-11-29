@@ -2,12 +2,11 @@ package com.example.warehouseproject.services;
 
 import com.example.warehouseproject.exceptions.DuplicateEntityException;
 import com.example.warehouseproject.exceptions.EntityNotFoundException;
-import com.example.warehouseproject.models.Part;
-import com.example.warehouseproject.models.Warehouse;
-import com.example.warehouseproject.models.WarehousePart;
+import com.example.warehouseproject.models.*;
 import com.example.warehouseproject.models.dtos.*;
 import com.example.warehouseproject.repositories.WarehouseRepository;
 import com.example.warehouseproject.services.contracts.PartService;
+import com.example.warehouseproject.services.contracts.WarehouseLogService;
 import com.example.warehouseproject.services.contracts.WarehousePartService;
 import com.example.warehouseproject.services.contracts.WarehouseService;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +24,7 @@ public class WarehouseServiceImpl implements WarehouseService {
     private final ConversionService conversionService;
     private final WarehousePartService warehousePartService;
     private final PartService partService;
+    private final WarehouseLogService warehouseLogService;
 
     @Override
     public List<WarehouseOutput> findAllWarehouses() {
@@ -76,7 +76,7 @@ public class WarehouseServiceImpl implements WarehouseService {
 
 
     @Override
-    public void addPartToWarehouse(String warehouseName, String partTitle, int quantityOfPart) {
+    public void addPartToWarehouse(User user, String warehouseName, String partTitle, int quantityOfPart) {
 
         List<WarehousePartOutput> warehousePartOutputs = warehousePartService.findAllWarehousesParts();
 
@@ -88,10 +88,31 @@ public class WarehouseServiceImpl implements WarehouseService {
 
                 WarehousePart warehousePart = warehousePartService.findWarehousePart(warehouse, part);
                 warehousePartService.changeTheQuantity(warehousePart, quantityOfPart);
+
+                WarehouseLogInput warehouseLogInput = WarehouseLogInput.builder()
+                        .user(user)
+                        .warehouse(warehouse)
+                        .part(part)
+                        .action(Action.ADD)
+                        .quantity(quantityOfPart)
+                        .build();
+
+                warehouseLogService.createWarehouseLog(warehouseLogInput);
+
             }else {
 
                 Warehouse warehouse = warehouseRepository.findWarehouseEntityByName(warehouseName);
                 Part part = partService.getPartEntity(partTitle);
+
+                WarehouseLogInput warehouseLogInput = WarehouseLogInput.builder()
+                        .user(user)
+                        .warehouse(warehouse)
+                        .part(part)
+                        .action(Action.ADD)
+                        .quantity(quantityOfPart)
+                        .build();
+
+                warehouseLogService.createWarehouseLog(warehouseLogInput);
 
                 warehousePartService.createWarehouse(warehouse, part, quantityOfPart);
             }
@@ -102,6 +123,16 @@ public class WarehouseServiceImpl implements WarehouseService {
             Part part = partService.getPartEntity(partTitle);
 
             warehousePartService.createWarehouse(warehouse, part, quantityOfPart);
+
+            WarehouseLogInput warehouseLogInput = WarehouseLogInput.builder()
+                    .user(user)
+                    .warehouse(warehouse)
+                    .part(part)
+                    .action(Action.ADD)
+                    .quantity(quantityOfPart)
+                    .build();
+
+            warehouseLogService.createWarehouseLog(warehouseLogInput);
         }
 
     }

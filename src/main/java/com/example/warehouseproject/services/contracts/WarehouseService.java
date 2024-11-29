@@ -1,5 +1,6 @@
 package com.example.warehouseproject.services.contracts;
 
+import com.example.warehouseproject.models.User;
 import com.example.warehouseproject.models.Warehouse;
 import com.example.warehouseproject.models.dtos.WarehouseInput;
 import com.example.warehouseproject.models.dtos.WarehouseOutput;
@@ -18,5 +19,5 @@ public interface WarehouseService {
 
     WarehouseOutputId createWarehouse(WarehouseInput warehouseInput);
 
-    void addPartToWarehouse(String warehouseName, String partTitle, int quantityOfPart);
+    void addPartToWarehouse(User user, String warehouseName, String partTitle, int quantityOfPart);
 }

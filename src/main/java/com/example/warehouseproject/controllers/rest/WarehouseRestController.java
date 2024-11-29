@@ -1,9 +1,12 @@
 package com.example.warehouseproject.controllers.rest;
 
+import com.example.warehouseproject.helpers.AuthenticationHelper;
+import com.example.warehouseproject.models.User;
 import com.example.warehouseproject.models.dtos.*;
 import com.example.warehouseproject.services.contracts.WarehouseService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +19,7 @@ import java.util.List;
 public class WarehouseRestController {
 
     private final WarehouseService warehouseService;
+    private final AuthenticationHelper authenticationHelper;
 
     @GetMapping
     public ResponseEntity<List<WarehouseOutput>> getAllWarehouses() {
@@ -38,9 +42,11 @@ public class WarehouseRestController {
     }
 
     @PostMapping("/add/part/warehouse")
-    public  ResponseEntity<String> addPartToWarehouse(@RequestParam String warehouseName, String partTitle,
+    public  ResponseEntity<String> addPartToWarehouse(@RequestHeader HttpHeaders headers, @RequestParam String warehouseName, String partTitle,
                                                       int quantityOfPAart){
-        warehouseService.addPartToWarehouse(warehouseName, partTitle, quantityOfPAart);
+
+        User user = authenticationHelper.tryGetUser(headers);
+        warehouseService.addPartToWarehouse(user, warehouseName, partTitle, quantityOfPAart);
         return new ResponseEntity<>("Successfully added part!", HttpStatus.OK);
     }
 }
