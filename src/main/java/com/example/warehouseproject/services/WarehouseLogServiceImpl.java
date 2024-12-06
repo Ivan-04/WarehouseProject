@@ -1,5 +1,7 @@
 package com.example.warehouseproject.services;
 
+import com.example.warehouseproject.helpers.PermissionHelper;
+import com.example.warehouseproject.models.User;
 import com.example.warehouseproject.models.WarehouseLog;
 import com.example.warehouseproject.models.dtos.WarehouseLogInput;
 import com.example.warehouseproject.models.dtos.WarehouseLogOutput;
@@ -21,14 +23,16 @@ public class WarehouseLogServiceImpl implements WarehouseLogService {
     private final ConversionService conversionService;
 
     @Override
-    public List<WarehouseLogOutput> findAllWarehouseLogs(){
+    public List<WarehouseLogOutput> findAllWarehouseLogs(User user){
+        PermissionHelper.isOwnerOrManager(user);
         List<WarehouseLog> listOFLogs = warehouseLogRepository.findAll();
         return listOFLogs.stream().map(log -> conversionService.convert(log, WarehouseLogOutput.class))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public WarehouseLogOutput findWarehouseLogById(int id){
+    public WarehouseLogOutput findWarehouseLogById(int id, User user){
+        PermissionHelper.isOwnerOrManager(user);
         WarehouseLog log = warehouseLogRepository.findByLogId(id);
         return conversionService.convert(log, WarehouseLogOutput.class);
     }
