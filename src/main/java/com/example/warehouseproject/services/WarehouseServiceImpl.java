@@ -136,4 +136,42 @@ public class WarehouseServiceImpl implements WarehouseService {
         }
 
     }
+
+    @Override
+    public void removePartFromWarehouse(User user, String warehouseName, String partTitle, int quantityOfPart) {
+
+        List<WarehousePartOutput> warehousePartOutputs = warehousePartService.findAllWarehousesParts();
+
+        boolean isFounded = false;
+
+        if (warehousePartOutputs.isEmpty()){
+            throw new EntityNotFoundException("Part", "title", partTitle);
+        }
+
+        for (WarehousePartOutput warehousePartOutput : warehousePartOutputs) {
+            if (warehousePartOutput.getPartName().equals(partTitle) &&
+                    warehousePartOutput.getWarehouseName().equals(warehouseName)){
+                Warehouse warehouse = warehouseRepository.findWarehouseEntityByName(warehouseName);
+                Part part = partService.getPartEntity(partTitle);
+
+                WarehousePart warehousePart = warehousePartService.findWarehousePart(warehouse, part);
+                warehousePartService.removePartOfThisType(warehousePart, quantityOfPart);
+
+                WarehouseLogInput warehouseLogInput = WarehouseLogInput.builder()
+                        .user(user)
+                        .warehouse(warehouse)
+                        .part(part)
+                        .action(Action.REMOVE)
+                        .quantity(quantityOfPart)
+                        .build();
+                warehouseLogService.createWarehouseLog(warehouseLogInput);
+                isFounded = true;
+                break;
+            }
+        }
+
+        if (!isFounded){
+            throw new EntityNotFoundException("Part", "title", partTitle);
+        }
+    }
 }

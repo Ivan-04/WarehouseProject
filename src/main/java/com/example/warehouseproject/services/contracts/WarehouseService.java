@@ -20,4 +20,6 @@ public interface WarehouseService {
     WarehouseOutputId createWarehouse(WarehouseInput warehouseInput);
 
     void addPartToWarehouse(User user, String warehouseName, String partTitle, int quantityOfPart);
+
+    void removePartFromWarehouse(User user, String warehouseName, String partTitle, int quantityOfPart);
 }

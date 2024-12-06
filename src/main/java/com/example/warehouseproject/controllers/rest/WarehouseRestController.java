@@ -49,4 +49,13 @@ public class WarehouseRestController {
         warehouseService.addPartToWarehouse(user, warehouseName, partTitle, quantityOfPAart);
         return new ResponseEntity<>("Successfully added part!", HttpStatus.OK);
     }
+
+    @DeleteMapping("/remove/part/warehouse")
+    public  ResponseEntity<String> removePartFromWarehouse(@RequestHeader HttpHeaders headers, @RequestParam String warehouseName, String partTitle,
+                                                      int quantityOfPAart){
+
+        User user = authenticationHelper.tryGetUser(headers);
+        warehouseService.removePartFromWarehouse(user, warehouseName, partTitle, quantityOfPAart);
+        return new ResponseEntity<>("Successfully removed part!", HttpStatus.OK);
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.warehouseproject.services;
 
+import com.example.warehouseproject.exceptions.InsufficientPartException;
 import com.example.warehouseproject.models.Part;
 import com.example.warehouseproject.models.Warehouse;
 import com.example.warehouseproject.models.WarehousePart;
@@ -49,6 +50,17 @@ public class WarehousePartServiceImpl implements WarehousePartService {
     @Override
     public void changeTheQuantity(WarehousePart warehousePart, int quantityOfPart) {
         warehousePart.setQuantity(warehousePart.getQuantity() + quantityOfPart);
+        warehousePartsRepository.save(warehousePart);
+    }
+
+    @Override
+    public void removePartOfThisType(WarehousePart warehousePart, int quantityOfPart) {
+
+        if(warehousePart.getQuantity() < quantityOfPart) {
+            throw new InsufficientPartException("Not enough parts of this type!");
+        }
+
+        warehousePart.setQuantity(warehousePart.getQuantity() - quantityOfPart);
         warehousePartsRepository.save(warehousePart);
     }
 

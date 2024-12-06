@@ -17,4 +17,6 @@ public interface WarehousePartService {
     void createWarehouse(Warehouse warehouse, Part part, int quantityOfPart);
 
     void changeTheQuantity(WarehousePart warehousePart, int quantityOfPart);
+
+    void removePartOfThisType(WarehousePart warehousePart, int quantityOfPart);
 }
