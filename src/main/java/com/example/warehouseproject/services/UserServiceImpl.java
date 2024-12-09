@@ -25,6 +25,11 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+    @Override
     public List<UserOutput> findAll() {
         List<User> listOfUsers = userRepository.findAll();
         List<UserOutput> listOfUserOutputs = new ArrayList<>();
@@ -40,6 +45,13 @@ public class UserServiceImpl implements UserService {
                 () -> new EntityNotFoundException("User", id));
 
         return conversionService.convert(user, UserOutput.class);
+    }
+
+    @Override
+    public User findUserEntityById(int id) {
+        User user = userRepository.findUserByUserId(id).orElseThrow(
+                () -> new EntityNotFoundException("User", id));
+        return user;
     }
 
     @Override

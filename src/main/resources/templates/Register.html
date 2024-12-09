@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - Gudex Warehouse</title>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <h1 class="title">Register for Gudex Warehouse</h1>
+    <nav>
+      <ul class="nav-links">
+        <li><a href="#" th:href="@{/}" th:text="#{navigation.home}">Home</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="register-container">
+    <form action="#" th:action="@{/auth/register}" th:object="${register}" method="post"
+          enctype="multipart/form-data" class="register-form">
+
+      <label th:text="#{user.label.email}">Email</label>
+      <label>
+        <input type="email" th:field="*{email}" placeholder="Enter your email"/>
+      </label>
+      <label class="error" th:errors="*{email}">Email error placeholder</label>
+
+      <label th:text="#{user.label.password}">Password</label>
+      <label>
+        <input type="password" th:field="*{password}" placeholder="Enter your password"/>
+      </label>
+      <label class="error" th:errors="*{password}">Password error placeholder</label>
+
+      <label th:text="#{user.label.passwordConfirm}">Confirm Password</label>
+      <label>
+        <input type="password" th:field="*{passwordConfirm}" placeholder="Confirm your password"/>
+      </label>
+      <label class="error" th:errors="*{passwordConfirm}">Confirm Password error placeholder</label>
+
+      <label th:text="#{user.label.firstName}">First Name</label>
+      <label>
+        <input type="text" th:field="*{firstName}" placeholder="Enter your first name"/>
+      </label>
+      <label class="error" th:errors="*{firstName}">First Name error placeholder</label>
+
+      <label th:text="#{user.label.lastName}">Last Name</label>
+      <label>
+        <input type="text" th:field="*{lastName}" placeholder="Enter your last name"/>
+      </label>
+      <label class="error" th:errors="*{lastName}">Last Name error placeholder</label>
+
+      <label for="role">Role:</label>
+      <select id="role" th:field="*{role}" required>
+        <option value="OWNER">OWNER</option>
+        <option value="MANAGER">MANAGER</option>
+        <option value="OPERATOR">OPERATOR</option>
+        <option value="GENERAL_WORKER">GENERAL WORKER</option>
+        <option value="ELECTRICAL_TECHNICAL">ELECTRICAL TECHNICAL</option>
+        <option value="CONSULTANT">CONSULTANT</option>
+      </select>
+      <input type="submit" value="Register" class="register-btn"/>
+    </form>
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <small th:text="${'© Copyright ' + #dates.year(#dates.createNow()) + ' Gudex Warehouse'}">© 2024 Gudex
+      Warehouse</small>
+  </div>
+</footer>
+
+
+
+</body>
+</html>

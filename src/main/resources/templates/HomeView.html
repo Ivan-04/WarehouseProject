@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gudex Warehouse Home</title>
+</head>
+<body>
+<div class="navigation">
+    <h3>
+        <a href="#" th:href="@{/}" th:text="#{navigation.home}">Home</a>
+<!--        <a href="#" th:unless="${isAuthenticated}" th:href="@{/posts/free}" th:text="#{navigation.all-posts-free}">All-->
+<!--            Posts free</a>-->
+<!--        <a href="#" th:if="${isAuthenticated}" th:href="@{/posts}" th:text="#{navigation.all-posts}">All posts</a>-->
+        <a href="#" th:unless="${isAuthenticated}" th:href="@{/auth/login}">Login</a>
+<!--        <a href="#" th:unless="${isAuthenticated}" th:href="@{/auth/register}">Register</a>-->
+<!--        <a href="#" th:if="${isAuthenticated}" th:href="@{/posts/new}" th:text="#{navigation.create-post}">Create-->
+<!--            Post</a>-->
+<!--        <a href="#" th:if="${isAuthenticated}" th:href="@{/posts/postsOfUser}">My Posts</a>-->
+<!--        <a href="#" th:if="${isAuthenticated && session.isAdmin}" th:href="@{/admin}">Admin Panel</a>-->
+<!--        <span th:if="${isAuthenticated}">-->
+<!--            <a href="#" th:if="${session.isModerator}" th:href="@{/admin}">Moderator Panel</a>-->
+<!--        </span>-->
+<!--        <a href="#" th:if="${isAuthenticated}" th:href="@{/admin/currentUser/Me}">My Profile</a>-->
+<!--        <a href="#" th:if="${isAuthenticated}" th:href="@{/auth/logout}">Logout</a>-->
+    </h3>
+</div>
+<!--<div class="button-group">-->
+<!--    <a th:href="@{/mostLikedPosts}" class="button">Most Liked Posts</a>-->
+<!--    <a th:href="@{/mostCommentedPosts}" class="button">Most Commented Posts</a>-->
+<!--    <a th:href="@{/mostRecentlyCreatedPosts}" class="button">Most Recently Created Posts</a>-->
+<!--</div>-->
+
+<!--<div class="body-content">-->
+<!--    <h2 th:text="#{home.welcome}">Welcome (design)!</h2>-->
+<!--    <p>Everything about Crypto in one place!</p>-->
+
+<!--    <div class="count-section">-->
+<!--        <div class="count-box">-->
+<!--            <h2>All Users in forum:</h2>-->
+<!--            <p th:text="${countOfUsers}"></p>-->
+<!--        </div>-->
+<!--        <div class="count-box">-->
+<!--            <h2>All Posts in forum:</h2>-->
+<!--            <p th:text="${countOfPosts}"></p>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<footer>
+    <small th:text="${'© Copyright ' + #dates.year(#dates.createNow()) + ' CryptoForum'}">CryptoForum</small>
+</footer>
+</body>
+</html>

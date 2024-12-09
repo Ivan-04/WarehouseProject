@@ -8,9 +8,13 @@ import com.example.warehouseproject.models.dtos.UserOutputId;
 import java.util.List;
 
 public interface UserService {
+    boolean existsByEmail(String email);
+
     List<UserOutput> findAll();
 
     UserOutput findUserById(int id);
+
+    User findUserEntityById(int id);
 
     UserOutput findUserByFirstName(String firstName);
 

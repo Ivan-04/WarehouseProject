@@ -24,6 +24,7 @@ public class Register extends Login {
     @Size(min = 4, max = 32, message = "Last name should be between 4 and 32 symbols!")
     private String lastName;
 
+    @NotNull(message = "Role can not be empty!")
     private Role role;
 
 }
