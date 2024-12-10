@@ -12,7 +12,11 @@
             margin: 0;
             padding: 0;
             color: #333;
+            background: linear-gradient(to bottom, #eaf4ff, #ffffff); /* Градиентен фон */
             background-color: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         .container {
@@ -93,12 +97,21 @@
             font-size: 14px;
         }
 
+        .top-left-g {
+            position: absolute;
+            top: 25px; /* Коригирано разстояние за междинната височина */
+            left: 20px;
+            font-size: 35px; /* Пропорционален размер на буквата */
+            font-weight: bold;
+            color: white;
+        }
+
         footer {
             text-align: center;
             padding: 10px 0;
             background: #333;
             color: #fff;
-            margin-top: 30px;
+            margin-top: auto;
         }
 
         .meta-info span {
@@ -146,6 +159,8 @@
 <body>
 
 <header class="site-header">
+    <span class="top-left-g">Gudex</span> <!-- Бяла буква G в горния ляв ъгъл -->
+
     <div class="container">
         <h1 class="title">Part Details</h1>
         <nav>

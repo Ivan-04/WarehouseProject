@@ -7,14 +7,17 @@
     <style>
         /* CSS правилата отива тук */
         body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Минималната височина на body да е цялата височина на екрана */
             margin: 0;
-            padding: 0;
-            color: #333;
+            background: linear-gradient(to bottom, #eaf4ff, #ffffff); /* Градиентен фон */
             background-color: #f9f9f9;
         }
 
+        main {
+            flex: 1; /* Заделя пространство за основното съдържание */
+        }
         .container {
             max-width: 1200px;
             margin: auto;
@@ -127,7 +130,7 @@
             display: flex;
             justify-content: center; /* Центрира пагинацията */
             gap: 10px;
-            margin-top: 20px;
+            margin-top: 350px;
         }
 
         .pagination-link {
@@ -202,6 +205,26 @@
             color: #555;
         }
 
+        .top-left-g {
+            position: absolute;
+            top: 25px; /* Коригирано разстояние за междинната височина */
+            left: 20px;
+            font-size: 35px; /* Пропорционален размер на буквата */
+            font-weight: bold;
+            color: white;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px 0;
+            background: #333;
+            color: white;
+            margin-top: auto; /* Footer винаги в долната част */
+        }
+
+        footer small {
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -209,6 +232,7 @@
 <header class="site-header">
     <div class="container">
         <h1 class="title">Parts List</h1>
+        <span class="top-left-g">Gudex</span>
         <nav>
             <ul class="nav-links">
                 <li><a th:href="@{/}">Home</a></li>
@@ -283,7 +307,7 @@
 <footer>
     <div class="container">
         <small th:text="${'© Copyright ' + #dates.year(#dates.createNow()) + ' Gudex Warehouse'}">© 2024
-            PhotoContest</small>
+            Gudex Warehouse</small>
     </div>
 </footer>
 </body>
