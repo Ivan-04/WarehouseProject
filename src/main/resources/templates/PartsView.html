@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parts List - Gudex Parts</title>
+</head>
+<body>
+
+<header class="site-header">
+    <div class="container">
+        <h1 class="title">Parts List</h1>
+        <nav>
+            <ul class="nav-links">
+                <li><a th:href="@{/}">Home</a></li>
+                <li th:if="${!isAuthenticated}"><a th:href="@{/auth/login}">Login</a></li>
+                <li th:if="${!isAuthenticated}"><a th:href="@{/auth/register}">Register</a></li>
+                <li th:if="${isAuthenticated}"><a th:href="@{/auth/logout}">Logout</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <div class="body-content">
+        <header class="header">
+            <h2 class="page-title">Parts List</h2>
+        </header>
+
+        <form method="get" action="/parts" class="filter-form">
+            <label>
+                <input type="text" name="title" placeholder="Title" th:value="${títle}"/>
+            </label>
+            <label>
+                <input type="text" name="description" placeholder="Description" th:value="${description}"/>
+            </label>
+<!--            <label>-->
+<!--                <input type="text" name="price" placeholder="Price" th:value="${price}"/>-->
+<!--            </label>-->
+            <button type="submit" class="filter-btn">Filter</button>
+        </form>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                <tr>
+                    <th>
+                        <a th:href="@{/parts(page=${currentPage}, size=${size}, sortBy='title', sortDirection=${sortDirection == 'asc' ? 'desc' : 'asc'})}">
+                            Title <span
+                                th:text="${sortBy == 'username'} ? (sortDirection == 'asc' ? '▲' : '▼') : ''"></span>
+                        </a>
+                    </th>
+                    <th>
+                        <a th:href="@{/parts(page=${currentPage}, size=${size}, sortBy='description', sortDirection=${sortDirection == 'asc' ? 'desc' : 'asc'})}">
+                            Description <span
+                                th:text="${sortBy == 'description'} ? (sortDirection == 'asc' ? '▲' : '▼') : ''"></span>
+                        </a>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="part : ${parts}">
+                    <td th:text="${part.title}">title</td>
+                    <td th:text="${part.description}">description</td>
+                    <td th:text="${part.createdAt}">00.00.00 2020</td>
+
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pagination">
+            <a th:if="${currentPage > 0}"
+               th:href="@{/parts(page=${currentPage - 1}, size=${size}, sortBy=${sortBy}, sortDirection=${sortDirection})}">
+                Previous
+            </a>
+
+            <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+        <a th:classappend="${i == currentPage} ? 'active'"
+           th:href="@{/parts(page=${i}, size=${size}, sortBy=${sortBy}, sortDirection=${sortDirection})}"
+           th:text="${i + 1}">1</a>
+    </span>
+            <a th:if="${currentPage < totalPages - 1}"
+               th:href="@{/parts(page=${currentPage + 1}, size=${size}, sortBy=${sortBy}, sortDirection=${sortDirection})}">
+                Next
+            </a>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <div class="container">
+        <small th:text="${'© Copyright ' + #dates.year(#dates.createNow()) + ' Gudex Warehouse'}">© 2024
+            PhotoContest</small>
+    </div>
+</footer>
+</body>
+</html>

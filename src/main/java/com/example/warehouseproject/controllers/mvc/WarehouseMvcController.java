@@ -30,8 +30,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class WarehouseMvcController {
 
     private final WarehouseService warehouseService;
-    private final WarehousePartService warehousePartService;
-    private final WarehouseLogService warehouseLogService;
     private final AuthenticationHelper authenticationHelper;
 
     @ModelAttribute("requestURI")
