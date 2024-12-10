@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Warehouse - Gudex Warehouse</title>
+</head>
+<body>
+
+<header class="site-header">
+    <div class="container">
+        <h1 class="title">Create a New Warehouse</h1>
+        <nav>
+            <ul class="nav-links">
+                <li><a th:href="@{/}">Home</a></li>
+                <li><a href="#" th:unless="${isAuthenticated}" th:href="@{/auth/login}">Login</a></li>
+                <li><a href="#" th:unless="${isAuthenticated}" th:href="@{/auth/register}">Register</a></li>
+                <li><a href="#" th:if="${isAuthenticated}" th:href="@{/auth/logout}">Logout</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <div class="body-content">
+        <header class="header">
+            <h2 th:text="#{subtitle2}">Create a new warehouse</h2>
+        </header>
+
+        <div class="form-container">
+            <form action="#" th:action="@{/warehouse/new}" th:object="${warehouse}" method="post">
+
+                <label th:text="#{warehouse.label.name}">Contest</label>
+                <label>
+                    <input type="text" th:field="*{name}" placeholder="Enter warehouse name"/>
+                </label>
+                <label class="error" th:errors="*{name}">Name error placeholder</label>
+
+                <input type="submit" value="Save Warehouse" class="submit-button"/>
+            </form>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <div class="container">
+        <small th:text="${'© Copyright ' + #dates.year(#dates.createNow()) + ' Gudex Warehouse'}">© 2024 Gudex
+            Warehouse</small>
+    </div>
+</footer>
+
+</body>
+</html>
