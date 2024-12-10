@@ -4,23 +4,145 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Gudex Warehouse</title>
+    <style>
+        /* Основни стилове */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #eaf4ff, #ffffff); /* Градиентен фон */
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .navigation {
+            background: #333;
+            color: white;
+            padding: 15px 0; /* Междинна височина */
+            text-align: center;
+            position: relative;
+            font-size: 18px;
+        }
+
+        .navigation h3 {
+            margin: 0;
+            font-size: 22px; /* Увеличен текст за заглавия */
+        }
+
+        .navigation a {
+            color: #ffffff;
+            text-decoration: none;
+            margin: 0 20px;
+            font-size: 18px;
+        }
+
+        .navigation a:hover {
+            text-decoration: underline;
+        }
+
+        .navigation .top-left-g {
+            position: absolute;
+            top: 10px; /* Коригирано разстояние за междинната височина */
+            left: 20px;
+            font-size: 35px; /* Пропорционален размер на буквата */
+            font-weight: bold;
+            color: white;
+        }
+
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center; /* Формата остава подравнена спрямо началото */
+            flex: 1;
+            gap: 100px; /* Разстояние между буквите и формата */
+            padding: 20px;
+            margin-top: 200px; /* Значително разстояние от горната част */
+        }
+
+        .login-form {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-form label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .login-form input[type="text"],
+        .login-form input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            background: #f9f9f9; /* Лек фон за полетата */
+        }
+
+        .login-form input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background: #0056b3;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .login-form input[type="submit"]:hover {
+            background: #003d80;
+        }
+
+        .login-form .error-msg {
+            color: red;
+            font-size: 14px;
+            margin-top: -15px;
+            margin-bottom: 15px;
+        }
+
+        .letter-g {
+            font-size: 300px; /* Увеличен размер на буквите */
+            font-weight: bold;
+            color: #0056b3;
+            text-shadow:
+                    1px 1px 2px #000,  /* Тънка черна сянка */
+                    5px 5px 10px rgba(0, 0, 0, 0.5); /* Дълбока сянка за 3D ефект */
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px 0;
+            background: #333;
+            color: white;
+            margin-top: auto; /* Позиционира footer в долната част на екрана */
+        }
+
+        footer small {
+            font-size: 14px;
+        }
+    </style>
 </head>
 <body>
 
-<header class="site-header">
-    <div class="container">
-        <h1 class="title">Login to Gudex Warehouse</h1>
-        <nav>
-            <ul class="nav-links">
-                <li><a href="#" th:href="@{/}" th:text="#{navigation.home}">Home</a></li>
-                <li><a href="#" th:unless="${isAuthenticated}" th:href="@{/auth/register}">Register</a></li>
-            </ul>
-        </nav>
-    </div>
-</header>
+<div class="navigation">
+    <span class="top-left-g">Gudex</span> <!-- Бяла буква G в горния ляв ъгъл -->
+    <h3>
+        <a href="#" th:href="@{/}">Home</a>
+        <a href="#" th:unless="${isAuthenticated}" th:href="@{/auth/register}">Register</a>
+    </h3>
+</div>
 
 <main>
     <div class="login-container">
+        <div class="letter-g">G</div> <!-- Лява буква G -->
         <form action="#" th:action="@{/auth/login}" th:object="${login}" method="post" class="login-form">
             <label for="email" th:text="#{user.label.email}">Email</label>
             <input type="text" id="email" th:field="*{email}" placeholder="Enter your email">
@@ -32,13 +154,14 @@
 
             <input type="submit" value="Login" class="login-btn">
         </form>
+<!--        <div class="letter-g">G</div> &lt;!&ndash; Дясна буква G &ndash;&gt;-->
     </div>
 </main>
 
 <footer>
     <div class="container">
-        <small th:text="${'© Copyright ' + #dates.year(#dates.createNow()) + ' Photo Contest'}">© 2024 Photo
-            Contest</small>
+        <small th:text="${'© Copyright ' + #dates.year(#dates.createNow()) + ' Gudex Warehouse'}">© 2024 Gudex
+            Warehouse</small>
     </div>
 </footer>
 </body>
