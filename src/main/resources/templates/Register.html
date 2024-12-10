@@ -4,12 +4,140 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Register - Gudex Warehouse</title>
+  <style>
+    /* Основни стилове */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom, #eaf4ff, #ffffff); /* Градиентен фон */
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .navigation {
+      background: #333;
+      color: white;
+      padding: 15px 0;
+      text-align: center;
+      position: relative;
+      font-size: 18px;
+    }
+
+    .navigation h3 {
+      margin: 0;
+      font-size: 22px;
+    }
+
+    .navigation a {
+      color: #ffffff;
+      text-decoration: none;
+      margin: 0 20px;
+      font-size: 18px;
+    }
+
+    .navigation a:hover {
+      text-decoration: underline;
+    }
+
+    .navigation .top-left-g {
+      position: absolute;
+      top: 30px;
+      left: 20px;
+      font-size: 65px;
+      font-weight: bold;
+      color: white;
+    }
+
+    .register-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex: 1;
+      gap: 50px; /* Разстояние между буквите и формата */
+      padding: 20px;
+      margin-top: 50px; /* Допълнително разстояние от навигационния бар */
+    }
+
+    .register-form {
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .register-form label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .register-form input[type="text"],
+    .register-form input[type="password"],
+    .register-form input[type="email"],
+    .register-form select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+      background: #f9f9f9;
+    }
+
+    .register-form input[type="submit"] {
+      width: 100%;
+      padding: 10px;
+      background: #0056b3;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .register-form input[type="submit"]:hover {
+      background: #003d80;
+    }
+
+    .register-form .error {
+      color: red;
+      font-size: 14px;
+      margin-top: -15px;
+      margin-bottom: 15px;
+    }
+
+    .letter-g {
+      font-size: 150px; /* Увеличен размер на буквите */
+      font-weight: bold;
+      color: #0056b3;
+      text-shadow:
+              1px 1px 2px #000,  /* Тънка черна сянка */
+              5px 5px 10px rgba(0, 0, 0, 0.5); /* Дълбока сянка за 3D ефект */
+    }
+
+    footer {
+      text-align: center;
+      padding: 10px 0;
+      background: #333;
+      color: white;
+      margin-top: auto; /* Footer винаги в долната част */
+    }
+
+    footer small {
+      font-size: 14px;
+    }
+  </style>
 </head>
 <body>
 
 <header class="site-header">
-  <div class="container">
-    <h1 class="title">Register for Gudex Warehouse</h1>
+  <div class="navigation">
+    <span class="top-left-g">G</span> <!-- Бяла буква G в горния ляв ъгъл -->
+    <h1 class="title">Register to Gudex Warehouse</h1>
     <nav>
       <ul class="nav-links">
         <li><a href="#" th:href="@{/}" th:text="#{navigation.home}">Home</a></li>
@@ -20,6 +148,7 @@
 
 <main>
   <div class="register-container">
+    <div class="letter-g">G</div> <!-- Лява буква G -->
     <form action="#" th:action="@{/auth/register}" th:object="${register}" method="post"
           enctype="multipart/form-data" class="register-form">
 
