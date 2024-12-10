@@ -4,6 +4,205 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Parts List - Gudex Parts</title>
+    <style>
+        /* CSS правилата отива тук */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        .site-header {
+            background: #333;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .site-header .title {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            margin: 10px 0 0;
+            padding: 0;
+        }
+
+        .nav-links li {
+            margin: 0 10px;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .body-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Центрира всички елементи хоризонтално */
+            gap: 20px; /* Разстояние между елементите */
+            margin-top: 30px;
+        }
+
+        .filter-form {
+            display: flex;
+            gap: 10px; /* Разстояние между полетата */
+            flex-wrap: wrap; /* Поддръжка на респонсивност */
+            justify-content: center; /* Центриране на формата */
+        }
+
+        .filter-form input {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .filter-btn {
+            background: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .filter-btn:hover {
+            background: #555;
+        }
+
+        .sorting-controls {
+            display: flex;
+            gap: 15px; /* Разстояние между линковете */
+            justify-content: center; /* Центрира контролите */
+            font-size: 14px;
+        }
+
+        .sorting-controls a {
+            text-decoration: none;
+            color: #333;
+            border: 1px solid #ddd;
+            padding: 5px 10px;
+            border-radius: 5px;
+            background-color: #f5f5f5;
+            transition: background-color 0.3s;
+        }
+
+        .sorting-controls a:hover {
+            background-color: #ddd;
+        }
+
+        .table-container {
+            margin: 20px auto;
+            text-align: center;
+        }
+
+        .parts-table {
+            width: 80%; /* Регулира ширината на таблицата */
+            margin: 0 auto; /* Центрира таблицата */
+            border-collapse: collapse;
+        }
+
+        .parts-table th, .parts-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center; /* Центрира пагинацията */
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .pagination-link {
+            margin: 0;
+            text-decoration: none;
+            color: #333;
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .pagination-link.active, .pagination-link:hover {
+            background: #333;
+            color: #fff;
+        }
+
+        footer {
+            text-align: center; /* Центрира текста в най-долния ред */
+            padding: 10px 0;
+            background: #333; /* Опционално: променяме цвета на фона за по-добър визуален ефект */
+            color: #fff;
+        }
+
+        .parts-table td div {
+            margin-bottom: 10px; /* Разстояние между редовете */
+            border-bottom: 1px solid #ddd; /* Разграничаване чрез долна линия */
+            padding-bottom: 10px;
+        }
+
+
+        .parts-container {
+            display: flex;
+            flex-direction: column; /* Вертикално подреждане на частите */
+            gap: 20px; /* Разстояние между частите */
+            margin: 20px auto;
+            max-width: 90%; /* Увеличаваме ширината до 90% от екрана */
+        }
+
+        .part-item {
+            display: flex;
+            justify-content: space-between; /* Разпределяме равномерно */
+            align-items: center; /* Центрираме вертикално елементите */
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #fff; /* Бял фон за контраст */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Леко сенчест ефект */
+            width: 100%; /* Удължаваме редовете */
+        }
+
+        .part-item div {
+            flex: 1; /* Гъвкаво разпределение на място */
+            text-align: left;
+            margin-right: 15px; /* Разстояние между колоните */
+        }
+
+        .part-item .part-title {
+            font-weight: bold;
+            font-size: 16px;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .part-item .part-title:hover {
+            text-decoration: underline;
+        }
+
+        .part-item .part-description,
+        .part-item .part-price,
+        .part-item .part-createdAt {
+            font-size: 14px;
+            color: #555;
+        }
+
+    </style>
 </head>
 <body>
 
@@ -27,6 +226,17 @@
             <h2 class="page-title">Parts List</h2>
         </header>
 
+        <div class="sorting-controls">
+            <a th:href="@{/parts(page=${currentPage}, size=${size}, sortBy='title', sortDirection=${sortDirection == 'asc' ? 'desc' : 'asc'})}">
+                Title <span
+                    th:text="${sortBy == 'title'} ? (sortDirection == 'asc' ? '▲' : '▼') : ''"></span>
+            </a>
+            <a th:href="@{/parts(page=${currentPage}, size=${size}, sortBy='description', sortDirection=${sortDirection == 'asc' ? 'desc' : 'asc'})}">
+                Description <span
+                    th:text="${sortBy == 'description'} ? (sortDirection == 'asc' ? '▲' : '▼') : ''"></span>
+            </a>
+        </div>
+
         <form method="get" action="/parts" class="filter-form">
             <label>
                 <input type="text" name="title" placeholder="Title" th:value="${títle}"/>
@@ -40,33 +250,15 @@
             <button type="submit" class="filter-btn">Filter</button>
         </form>
 
-        <div class="table-container">
-            <table>
-                <thead>
-                <tr>
-                    <th>
-                        <a th:href="@{/parts(page=${currentPage}, size=${size}, sortBy='title', sortDirection=${sortDirection == 'asc' ? 'desc' : 'asc'})}">
-                            Title <span
-                                th:text="${sortBy == 'username'} ? (sortDirection == 'asc' ? '▲' : '▼') : ''"></span>
-                        </a>
-                    </th>
-                    <th>
-                        <a th:href="@{/parts(page=${currentPage}, size=${size}, sortBy='description', sortDirection=${sortDirection == 'asc' ? 'desc' : 'asc'})}">
-                            Description <span
-                                th:text="${sortBy == 'description'} ? (sortDirection == 'asc' ? '▲' : '▼') : ''"></span>
-                        </a>
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="part : ${parts}">
-                    <td th:text="${part.title}">title</td>
-                    <td th:text="${part.description}">description</td>
-                    <td th:text="${part.createdAt}">00.00.00 2020</td>
-
-                </tr>
-                </tbody>
-            </table>
+        <div class="parts-container">
+            <div class="part-item" th:each="part : ${parts}">
+                <div>
+                    <a class="part-title" href="#" th:href="@{/parts/{id}(id=${part.partId})}" th:text="${part.title}">Part</a>
+                </div>
+                <div class="part-description" th:text="${part.description}">Description</div>
+                <div class="part-price" th:text="${part.price}">Price</div>
+                <div class="part-createdAt" th:text="${part.createdAt}">CreatedAt</div>
+            </div>
         </div>
 
         <div class="pagination">

@@ -3,51 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <title>Gudex Warehouse Home</title>
+    <style>
+        /* Основни стилове */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            background: linear-gradient(to bottom, #eaf4ff, #ffffff); /* Градиентен фон */
+            display: flex;
+            flex-direction: column;
+            height: 100vh; /* Заема цялата височина на екрана */
+        }
+
+        .navigation {
+            background: #333;
+            color: white;
+            padding: 20px 0; /* Увеличаваме височината */
+            text-align: center;
+            position: relative; /* За позициониране на горното „G“ */
+            font-size: 20px; /* Увеличаваме размера на текста */
+        }
+
+        .navigation h3 {
+            margin: 0;
+            font-size: 24px; /* Правим заглавията по-големи */
+        }
+
+        .navigation a {
+            color: #ffffff;
+            text-decoration: none;
+            margin: 0 20px; /* Увеличаваме разстоянието между линковете */
+            font-size: 18px; /* Увеличаваме текста на линковете */
+        }
+
+        .navigation a:hover {
+            text-decoration: underline;
+        }
+
+        .navigation .top-left-g {
+            position: absolute;
+            top: 15px; /* Настройваме разстоянието отгоре спрямо увеличената височина */
+            left: 20px;
+            font-size: 40px; /* Увеличаваме размера на горното „G“ */
+            font-weight: bold;
+            color: white;
+        }
+
+        .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column; /* Подрежда текста и буквата вертикално */
+            justify-content: center;
+            align-items: center;
+            padding: 0 10px; /* Леко вътрешно отстояние */
+        }
+
+        .welcome-text {
+            font-size: 48px; /* По-голям размер на надписа */
+            color: #777; /* Сив цвят */
+            margin-bottom: 20px; /* Разстояние над буквата */
+            font-weight: bold;
+            text-shadow:
+                    2px 2px 0px #ccc,  /* Светла сянка за 3D ефект */
+                    4px 4px 2px rgba(0, 0, 0, 0.3); /* Тъмна сянка за дълбочина */
+        }
+
+        .center-letter {
+            font-size: 360px; /* Два пъти по-голям размер на буквата */
+            font-weight: bold;
+            color: #0056b3; /* По-тъмно син цвят */
+            text-shadow:
+                    1px 1px 2px #000,  /* Тънка черна сянка */
+                    4px 4px 8px rgba(0, 0, 0, 0.5); /* Дълбока сянка за 3D ефект */
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px 0;
+            background: #333;
+            color: white;
+        }
+
+        footer small {
+            font-size: 14px;
+        }
+    </style>
 </head>
 <body>
 <div class="navigation">
+    <span class="top-left-g">Gudex</span> <!-- Бяла буква G в горния ляв ъгъл -->
     <h3>
-        <a href="#" th:href="@{/}" th:text="#{navigation.home}">Home</a>
-<!--        <a href="#" th:unless="${isAuthenticated}" th:href="@{/posts/free}" th:text="#{navigation.all-posts-free}">All-->
-<!--            Posts free</a>-->
-<!--        <a href="#" th:if="${isAuthenticated}" th:href="@{/posts}" th:text="#{navigation.all-posts}">All posts</a>-->
         <a href="#" th:unless="${isAuthenticated}" th:href="@{/auth/login}">Login</a>
-<!--        <a href="#" th:unless="${isAuthenticated}" th:href="@{/auth/register}">Register</a>-->
-<!--        <a href="#" th:if="${isAuthenticated}" th:href="@{/posts/new}" th:text="#{navigation.create-post}">Create-->
-<!--            Post</a>-->
-<!--        <a href="#" th:if="${isAuthenticated}" th:href="@{/posts/postsOfUser}">My Posts</a>-->
+        <a href="#" th:unless="${isAuthenticated}" th:href="@{/auth/register}">Register</a>
+        <a href="#" th:if="${isAuthenticated}" th:href="@{/parts}">Parts List</a>
 <!--        <a href="#" th:if="${isAuthenticated && session.isAdmin}" th:href="@{/admin}">Admin Panel</a>-->
 <!--        <span th:if="${isAuthenticated}">-->
 <!--            <a href="#" th:if="${session.isModerator}" th:href="@{/admin}">Moderator Panel</a>-->
 <!--        </span>-->
-<!--        <a href="#" th:if="${isAuthenticated}" th:href="@{/admin/currentUser/Me}">My Profile</a>-->
-<!--        <a href="#" th:if="${isAuthenticated}" th:href="@{/auth/logout}">Logout</a>-->
+        <a href="#" th:if="${isAuthenticated}" th:href="@{/auth/logout}">Logout</a>
     </h3>
 </div>
-<!--<div class="button-group">-->
-<!--    <a th:href="@{/mostLikedPosts}" class="button">Most Liked Posts</a>-->
-<!--    <a th:href="@{/mostCommentedPosts}" class="button">Most Commented Posts</a>-->
-<!--    <a th:href="@{/mostRecentlyCreatedPosts}" class="button">Most Recently Created Posts</a>-->
-<!--</div>-->
 
-<!--<div class="body-content">-->
-<!--    <h2 th:text="#{home.welcome}">Welcome (design)!</h2>-->
-<!--    <p>Everything about Crypto in one place!</p>-->
-
-<!--    <div class="count-section">-->
-<!--        <div class="count-box">-->
-<!--            <h2>All Users in forum:</h2>-->
-<!--            <p th:text="${countOfUsers}"></p>-->
-<!--        </div>-->
-<!--        <div class="count-box">-->
-<!--            <h2>All Posts in forum:</h2>-->
-<!--            <p th:text="${countOfPosts}"></p>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
-
+<div class="content">
+    <div class="welcome-text">Welcome to</div> <!-- Надписът "Welcome to" -->
+    <div class="center-letter">G</div> <!-- Голяма синя буква G -->
+</div>
 <footer>
-    <small th:text="${'© Copyright ' + #dates.year(#dates.createNow()) + ' CryptoForum'}">CryptoForum</small>
+    <small th:text="${'© Copyright ' + #dates.year(#dates.createNow()) + ' Gudex Warehouse'}">Gudex Warehouse</small>
 </footer>
 </body>
 </html>

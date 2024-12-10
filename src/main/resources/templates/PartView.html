@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Part Details</title>
+    <style>
+        /* Основни стилове */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        .site-header {
+            background: #333;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .site-header .title {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            margin: 10px 0 0;
+            padding: 0;
+        }
+
+        .nav-links li {
+            margin: 0 10px;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .body-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .part-details {
+            width: 90%; /* Разширяваме блока с детайли */
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .part-details h2 {
+            font-size: 24px;
+            color: #333;
+            margin: 0;
+            text-align: center;
+        }
+
+        .meta-info {
+            display: flex;
+            flex-wrap: wrap; /* Позволява пренасяне на редовете */
+            gap: 20px;
+            justify-content: space-between; /* Разделя колоните */
+        }
+
+        .meta-info span {
+            flex: 1 1 30%; /* Гъвкаво разпределение */
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px 0;
+            background: #333;
+            color: #fff;
+            margin-top: 30px;
+        }
+
+        .meta-info span {
+            flex: 1 1 30%; /* Гъвкаво разпределение */
+            background: linear-gradient(135deg, #f5f5f5, #ffffff); /* Нежен градиент */
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 16px; /* Леко по-голям шрифт */
+            font-weight: bold;
+            color: #444;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Леко сенчест ефект */
+            position: relative;
+            transition: transform 0.2s, box-shadow 0.2s; /* Анимация при задържане */
+        }
+
+        .meta-info span:hover {
+            transform: translateY(-3px); /* Повдигане при задържане */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* По-силна сянка при задържане */
+        }
+
+        .meta-info span:before {
+            content: ""; /* Икони чрез псевдоелемент */
+            display: block;
+            width: 30px;
+            height: 30px;
+            margin: 0 auto 10px;
+            background-size: cover;
+        }
+
+        .meta-info span:nth-child(1):before {
+            background-image: url('https://cdn-icons-png.flaticon.com/512/1828/1828743.png'); /* Икона за дескрипшън */
+        }
+
+        .meta-info span:nth-child(2):before {
+            background-image: url('https://cdn-icons-png.flaticon.com/512/138/138281.png'); /* Икона за цена */
+        }
+
+        .meta-info span:nth-child(3):before {
+            background-image: url('https://cdn-icons-png.flaticon.com/512/2629/2629850.png'); /* Икона за дата */
+        }
+
+    </style>
+</head>
+<body>
+
+<header class="site-header">
+    <div class="container">
+        <h1 class="title">Part Details</h1>
+        <nav>
+            <ul class="nav-links">
+                <li><a th:href="@{/}">Home</a></li>
+                <li><a th:href="@{/auth/logout}">Logout</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<div class="body-content">
+    <div class="header">
+        <h2 class="part-title" th:text="${part.title}">Part Title</h2>
+    </div>
+    <div class="post-info">
+        <div class="meta-info">
+            <span th:text="'Description: ' + ${part.description}">Description: ...</span>
+            <span th:text="'Price: ' + ${part.price}">Price: ...</span>
+            <span th:text="'Created At: ' + ${#temporals.format(part.createdAt, 'dd-MM-yyyy')}">Created At: 01-01-2024</span>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="container">
+        <small th:text="${'© Copyright ' + #dates.year(#dates.createNow()) + ' Gudex Warehouse'}">© 2024
+            Gudex Warehouse</small>
+    </div>
+</footer>
+</body>
+</html>
