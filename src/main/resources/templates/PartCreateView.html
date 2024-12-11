@@ -34,6 +34,16 @@
                 </label>
                 <label class="error" th:errors="*{title}">Title error placeholder</label>
 
+                <label>
+                    <input type="text" th:field="*{description}" placeholder="Enter part description"/>
+                </label>
+                <label class="error" th:errors="*{description}">Description error placeholder</label>
+
+                <label>
+                    <input type="text" th:field="*{price}" placeholder="Enter part price"/>
+                </label>
+                <label class="error" th:errors="*{price}">Price error placeholder</label>
+
                 <input type="submit" value="Save Part" class="submit-button"/>
             </form>
         </div>
