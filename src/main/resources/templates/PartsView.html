@@ -225,6 +225,27 @@
         footer small {
             font-size: 14px;
         }
+
+        .add-btn {
+            background: #333;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .add-btn img {
+            width: 20px; /* Размер на иконата */
+            height: 20px;
+            filter: brightness(0) invert(1); /* Прави иконата бяла */
+        }
+
+        .add-btn:hover {
+            background: #555;
+        }
     </style>
 </head>
 <body>
@@ -272,6 +293,11 @@
 <!--                <input type="text" name="price" placeholder="Price" th:value="${price}"/>-->
 <!--            </label>-->
             <button type="submit" class="filter-btn">Filter</button>
+            <a th:href="@{/parts/new}" class="add-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-plus" viewBox="0 0 16 16">
+                    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                </svg>
+            </a>
         </form>
 
         <div class="parts-container">
