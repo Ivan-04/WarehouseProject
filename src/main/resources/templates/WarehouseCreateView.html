@@ -4,6 +4,147 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>New Warehouse - Gudex Warehouse</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #eaf4ff, #ffffff); /* Градиентен фон */
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background: #333;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        .top-left-g {
+            position: absolute;
+            top: 30px;
+            left: 20px;
+            font-size: 30px;
+            font-weight: bold;
+            color: white; /* Бял надпис в горния ляв ъгъл */
+        }
+
+        nav .nav-links {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        nav .nav-links a:hover {
+            text-decoration: underline;
+        }
+
+        main {
+            flex: 1;
+            display: flex; /* Flexbox за центриране */
+            justify-content: center; /* Хоризонтално центриране */
+            align-items: center; /* Вертикално центриране */
+            text-align: center;
+            transform: translateY(-75px); /* Леко повдигане нагоре */
+
+        }
+
+        .body-content {
+            display: flex; /* Flexbox за подравняване на буквата и формата */
+            align-items: center; /* Центрира вертикално буквата и формата */
+            gap: 30px; /* Разстояние между буквата и формата */
+        }
+
+        .header h2 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .form-container form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background: none; /* Премахнат бял фон */
+            border: none; /* Премахната черна рамка */
+        }
+
+        .form-container label {
+            font-weight: bold;
+            text-align: center;
+            color: #555;
+        }
+
+        .form-container input[type="text"] {
+            width: 150%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            background: #f9f9f9;
+        }
+
+        .form-container .error {
+            color: red;
+            font-size: 14px;
+        }
+
+        .submit-button {
+            background: #333;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .submit-button:hover {
+            background: #555;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px 0;
+            background: #333;
+            color: white;
+            margin-top: auto;
+        }
+
+        .letter-g {
+            font-size: 150px; /* Увеличен размер на буквите */
+            font-weight: bold;
+            color: #0056b3;
+            text-shadow:
+                    1px 1px 2px #000,  /* Тънка черна сянка */
+                    5px 5px 10px rgba(0, 0, 0, 0.5); /* Дълбока сянка за 3D ефект */
+        }
+
+
+        footer small {
+            font-size: 14px;
+        }
+    </style>
 </head>
 <body>
 
@@ -11,6 +152,7 @@
     <div class="container">
         <h1 class="title">Create a New Warehouse</h1>
         <nav>
+            <span class="top-left-g">Gudex</span>
             <ul class="nav-links">
                 <li><a th:href="@{/}">Home</a></li>
                 <li><a href="#" th:unless="${isAuthenticated}" th:href="@{/auth/login}">Login</a></li>
@@ -23,14 +165,11 @@
 
 <main>
     <div class="body-content">
-        <header class="header">
-            <h2 th:text="#{subtitle2}">Create a new warehouse</h2>
-        </header>
-
+        <div class="letter-g">G</div>
         <div class="form-container">
-            <form action="#" th:action="@{/warehouse/new}" th:object="${warehouse}" method="post">
+            <form action="#" th:action="@{/warehouses/new}" th:object="${warehouse}" method="post">
 
-                <label th:text="#{warehouse.label.name}">Contest</label>
+                <label th:text="#{warehouse.label.name}">Warehouse</label>
                 <label>
                     <input type="text" th:field="*{name}" placeholder="Enter warehouse name"/>
                 </label>

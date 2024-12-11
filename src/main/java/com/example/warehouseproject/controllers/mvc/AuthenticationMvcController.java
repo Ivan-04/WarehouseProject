@@ -4,6 +4,7 @@ import com.example.warehouseproject.exceptions.AuthenticationFailureException;
 import com.example.warehouseproject.exceptions.DuplicateEntityException;
 import com.example.warehouseproject.exceptions.EntityNotFoundException;
 import com.example.warehouseproject.helpers.AuthenticationHelper;
+import com.example.warehouseproject.models.Role;
 import com.example.warehouseproject.models.User;
 import com.example.warehouseproject.models.dtos.Login;
 import com.example.warehouseproject.models.dtos.Register;
@@ -53,9 +54,11 @@ public class AuthenticationMvcController {
         try {
             User user = authenticationHelper.verifyAuthentication(loginDto.getEmail(), loginDto.getPassword());
             session.setAttribute("currentUser", loginDto.getEmail());
+            session.setAttribute("isOwner", user.getRole().equals(Role.OWNER));
+            session.setAttribute("isManager", user.getRole().equals(Role.MANAGER));
             return "redirect:/";
         } catch (AuthenticationFailureException | EntityNotFoundException e) {
-            bindingResult.rejectValue("username", "auth_error", e.getMessage());
+            bindingResult.rejectValue("email", "auth_error", e.getMessage());
             return "Login";
         }
     }

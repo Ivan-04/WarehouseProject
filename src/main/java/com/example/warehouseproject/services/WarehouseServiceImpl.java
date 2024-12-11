@@ -30,6 +30,17 @@ public class WarehouseServiceImpl implements WarehouseService {
     private final PartService partService;
     private final WarehouseLogService warehouseLogService;
 
+
+    @Override
+    public Page<Warehouse> getWarehousesWithFilters(String name, int page, int size, String sortBy, String sortDirection) {
+        Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortBy);
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        String nameLike = name != null ? "%" + name + "%" : null;
+        return warehouseRepository.findWarehousesByMultipleFields(nameLike, pageable);
+    }
+
+
     @Override
     public List<WarehouseOutput> findAllWarehouses() {
         List<Warehouse> warehouses = warehouseRepository.findAll();
