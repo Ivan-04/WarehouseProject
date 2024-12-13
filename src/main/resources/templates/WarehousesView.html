@@ -226,10 +226,10 @@
 
     <div class="warehouses-container">
       <div class="warehouse-item" th:each="warehouse : ${warehouses}">
-<!--        <div>-->
-<!--          <a class="warehouse-title" href="#" th:href="@{/parts/{id}(id=${part.partId})}" th:text="${part.title}">Part</a>-->
-<!--        </div>-->
-        <div class="warehouse-description" th:text="${warehouse.name}">NAme</div>
+        <div>
+          <a class="warehouse-description" href="#" th:href="@{/warehouses/{id}(id=${warehouse.warehouseId})}" th:text="${warehouse.name}">Warehouse</a>
+        </div>
+<!--        <div class="warehouse-description" th:text="${warehouse.name}">NAme</div>-->
 
       </div>
     </div>

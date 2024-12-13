@@ -105,4 +105,20 @@ public class WarehouseMvcController {
         return "WarehousesView";
     }
 
+    @GetMapping("/{id}")
+    public String showSingleWarehouse(@PathVariable int id, Model model, HttpSession session) {
+        try {
+            User user = authenticationHelper.tryGetUser(session);
+            Warehouse warehouse = warehouseService.findWarehouseEntityById(id);
+            model.addAttribute("warehouse", warehouse);
+            return "WarehouseView";
+        } catch (EntityNotFoundException e) {
+            model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
+            model.addAttribute("error", e.getMessage());
+            return "ErrorView";
+        } catch (AuthenticationFailureException e) {
+            return "AccessDeniedView";
+        }
+    }
+
 }

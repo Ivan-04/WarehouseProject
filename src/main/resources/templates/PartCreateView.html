@@ -4,6 +4,144 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>New Part - Gudex Warehouse</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #eaf4ff, #ffffff); /* Градиентен фон */
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background: #333;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        .top-left-g {
+            position: absolute;
+            top: 38px;
+            left: 20px;
+            font-size: 30px;
+            font-weight: bold;
+            color: white; /* Бял надпис в горния ляв ъгъл */
+        }
+
+        nav .nav-links {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        nav .nav-links a:hover {
+            text-decoration: underline;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            transform: translateY(-25px); /* Намалете стойността или я премахнете */
+        }
+
+        .body-content {
+            display: flex;
+            align-items: center;
+            gap: 30px; /* Разстояние между буквата и формата */
+            text-align: left;
+            margin-top: 20px; /* Добавете разстояние отгоре */
+        }
+
+        .letter-g {
+            font-size: 175px; /* Размер на буквата */
+            font-weight: bold;
+            color: #0056b3; /* Син цвят */
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* Леко сенчест ефект */
+        }
+
+        .form-container {
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .form-container form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .form-container label {
+            font-weight: bold;
+            text-align: left;
+            color: #555;
+        }
+
+        .form-container input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            background: #f9f9f9;
+        }
+
+        .form-container .error {
+            color: red;
+            font-size: 14px;
+        }
+
+        .submit-button {
+            background: #333;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .submit-button:hover {
+            background: #555;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px 0;
+            background: #333;
+            color: white;
+            margin-top: auto;
+        }
+
+        footer small {
+            font-size: 14px;
+        }
+    </style>
+
 </head>
 <body>
 
@@ -13,7 +151,7 @@
         <nav>
             <span class="top-left-g">Gudex</span>
             <ul class="nav-links">
-                <li><a th:href="@{/}">Home</a></li>
+                <li><a href="#" th:href="@{/}">Home</a></li>
                 <li><a href="#" th:unless="${isAuthenticated}" th:href="@{/auth/login}">Login</a></li>
                 <li><a href="#" th:unless="${isAuthenticated}" th:href="@{/auth/register}">Register</a></li>
                 <li><a href="#" th:if="${isAuthenticated}" th:href="@{/auth/logout}">Logout</a></li>
