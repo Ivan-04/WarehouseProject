@@ -4,6 +4,139 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Part - Gudex Warehouse</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #eaf4ff, #ffffff);
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background: #333;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .navigation .top-left-g {
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            font-size: 30px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .navigation .nav-links {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navigation .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .navigation .nav-links a:hover {
+            text-decoration: underline;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .register-container {
+            display: flex;
+            align-items: center;
+            gap: 30px; /* Разстояние между буквата и формата */
+            background: white;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .letter-g {
+            font-size: 150px;
+            font-weight: bold;
+            color: #0056b3;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 300px;
+        }
+
+        form label {
+            font-weight: bold;
+            text-align: left;
+            color: #555;
+        }
+
+        form select, form input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            background: #f9f9f9;
+        }
+        form input[type="number"] {
+            width: 80px; /* Намалена ширина за полето за число */
+            padding: 5px; /* Леко намаляване на вътрешния отстъп */
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            background: #f9f9f9;
+        }
+
+        form button {
+            background: #333;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        form button:hover {
+            background: #555;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px 0;
+            background: #333;
+            color: white;
+            margin-top: auto;
+        }
+
+        footer small {
+            font-size: 14px;
+        }
+    </style>
+
 </head>
 <body>
 
@@ -21,25 +154,6 @@
 <main>
     <div class="register-container">
         <div class="letter-g">G</div> <!-- Лява буква G -->
-<!--        <form action="#" th:action="@{/warehouses/add/part/{id}(id=${part.partId})}" th:object="${warehousePart}" method="post"-->
-<!--              enctype="multipart/form-data" class="register-form">-->
-
-<!--            <label>Quantity:</label>-->
-<!--            <input type="number" th:field="*{quantity}" placeholder="Enter quantity" required/>-->
-<!--            <div class="error" th:errors="*{quantity}">Quantity error</div>-->
-
-<!--            <label for="warehouse">Warehouse:</label>-->
-<!--            <select name="warehouse" id="warehouse" class="form-select">-->
-<!--                <option value="" disabled selected>&#45;&#45; Select Warehouse &#45;&#45;</option>-->
-<!--                <option th:each="warehouse : ${warehouses}"-->
-<!--                        th:value="${warehouse}"-->
-<!--                        th:text="${warehouse.name}"></option>-->
-<!--            </select>-->
-
-
-<!--            <input type="submit" value="Add" class="add-btn"/>-->
-<!--        </form>-->
-
         <form  action="#" th:action="@{/warehouses/add/part/{id}(id=${part.partId})}" th:object="${warehousePart}" method="post">
             <select th:field="*{warehouse.warehouseId}">
                 <option th:each="warehouse : ${warehouses}"
