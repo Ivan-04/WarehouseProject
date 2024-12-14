@@ -9,6 +9,7 @@ import com.example.warehouseproject.services.contracts.PartService;
 import com.example.warehouseproject.services.contracts.WarehouseLogService;
 import com.example.warehouseproject.services.contracts.WarehousePartService;
 import com.example.warehouseproject.services.contracts.WarehouseService;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
@@ -17,7 +18,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,6 +42,21 @@ public class WarehouseServiceImpl implements WarehouseService {
 
         String nameLike = name != null ? "%" + name + "%" : null;
         return warehouseRepository.findWarehousesByMultipleFields(nameLike, pageable);
+    }
+
+    @Override
+    public Map<Part, Integer> getAllPartsOfWarehouse(int id){
+        Warehouse warehouse = warehouseRepository.findWarehouseEntityByWarehouseId(id);
+        List<WarehousePartOutput> warehousePartList = warehousePartService.findAllWarehousesParts().stream().filter(warehousePartOutput ->
+                (warehousePartOutput.getWarehouseName().equals(warehouse.getName()))).toList();
+
+        Map<Part, Integer> map = new HashMap<>();
+
+        for(WarehousePartOutput warehousePartOutput : warehousePartList){
+            Part part = partService.getPartEntity(warehousePartOutput.getPartName());
+            map.put(part, warehousePartOutput.getQuantity());
+        }
+        return map;
     }
 
 

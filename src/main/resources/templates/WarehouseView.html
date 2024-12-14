@@ -147,6 +147,23 @@
     <div class="header">
         <h2 class="warehouse-name" th:text="${warehouse.name}">Warehouse Name</h2>
     </div>
+    <div class="parts-list">
+        <h3>Parts in this Warehouse</h3>
+        <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+            <thead>
+            <tr>
+                <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Part Name</th>
+                <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Quantity</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="entry : ${partsOfTheWarehouse}">
+                <td style="border: 1px solid #ddd; padding: 8px;" th:text="${entry.key.title}">Part Name</td>
+                <td style="border: 1px solid #ddd; padding: 8px;" th:text="${entry.value}">Quantity</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <footer>

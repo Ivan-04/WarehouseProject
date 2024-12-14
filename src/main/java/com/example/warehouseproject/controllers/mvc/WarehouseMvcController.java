@@ -25,6 +25,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @Controller
@@ -117,6 +118,8 @@ public class WarehouseMvcController {
             User user = authenticationHelper.tryGetUser(session);
             Warehouse warehouse = warehouseService.findWarehouseEntityById(id);
             model.addAttribute("warehouse", warehouse);
+            Map<Part, Integer> partOfThisWarehouse = warehouseService.getAllPartsOfWarehouse(id);
+            model.addAttribute("partsOfTheWarehouse", partOfThisWarehouse);
             return "WarehouseView";
         } catch (EntityNotFoundException e) {
             model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
