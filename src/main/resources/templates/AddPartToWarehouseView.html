@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Part - Gudex Warehouse</title>
+</head>
+<body>
+
+<header class="site-header">
+    <div class="navigation">
+        <span class="top-left-g">Gudex</span> <!-- Бяла буква G в горния ляв ъгъл -->
+        <nav>
+            <ul class="nav-links">
+                <li><a href="#" th:href="@{/}" th:text="#{navigation.home}">Home</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <div class="register-container">
+        <div class="letter-g">G</div> <!-- Лява буква G -->
+<!--        <form action="#" th:action="@{/warehouses/add/part/{id}(id=${part.partId})}" th:object="${warehousePart}" method="post"-->
+<!--              enctype="multipart/form-data" class="register-form">-->
+
+<!--            <label>Quantity:</label>-->
+<!--            <input type="number" th:field="*{quantity}" placeholder="Enter quantity" required/>-->
+<!--            <div class="error" th:errors="*{quantity}">Quantity error</div>-->
+
+<!--            <label for="warehouse">Warehouse:</label>-->
+<!--            <select name="warehouse" id="warehouse" class="form-select">-->
+<!--                <option value="" disabled selected>&#45;&#45; Select Warehouse &#45;&#45;</option>-->
+<!--                <option th:each="warehouse : ${warehouses}"-->
+<!--                        th:value="${warehouse}"-->
+<!--                        th:text="${warehouse.name}"></option>-->
+<!--            </select>-->
+
+
+<!--            <input type="submit" value="Add" class="add-btn"/>-->
+<!--        </form>-->
+
+        <form  action="#" th:action="@{/warehouses/add/part/{id}(id=${part.partId})}" th:object="${warehousePart}" method="post">
+            <select th:field="*{warehouse.warehouseId}">
+                <option th:each="warehouse : ${warehouses}"
+                        th:value="${warehouse.warehouseId}"
+                        th:text="${warehouse.name}"></option>
+            </select>
+            <input type="number" th:field="*{quantity}" min="1" />
+            <button type="submit">Add Part</button>
+        </form>
+
+    </div>
+</main>
+
+<footer>
+    <div class="container">
+        <small th:text="${'© Copyright ' + #dates.year(#dates.createNow()) + ' Gudex Warehouse'}">© 2024 Gudex
+            Warehouse</small>
+    </div>
+</footer>
+
+
+
+</body>
+</html>

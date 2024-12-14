@@ -4,10 +4,13 @@ import com.example.warehouseproject.exceptions.AuthenticationFailureException;
 import com.example.warehouseproject.exceptions.DuplicateEntityException;
 import com.example.warehouseproject.exceptions.EntityNotFoundException;
 import com.example.warehouseproject.helpers.AuthenticationHelper;
-import com.example.warehouseproject.models.Part;
-import com.example.warehouseproject.models.User;
-import com.example.warehouseproject.models.Warehouse;
+import com.example.warehouseproject.models.*;
 import com.example.warehouseproject.models.dtos.WarehouseInput;
+import com.example.warehouseproject.models.dtos.WarehouseLogInput;
+import com.example.warehouseproject.models.dtos.WarehouseOutput;
+import com.example.warehouseproject.services.contracts.PartService;
+import com.example.warehouseproject.services.contracts.WarehouseLogService;
+import com.example.warehouseproject.services.contracts.WarehousePartService;
 import com.example.warehouseproject.services.contracts.WarehouseService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -21,7 +24,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
@@ -31,6 +34,9 @@ public class WarehouseMvcController {
 
     private final WarehouseService warehouseService;
     private final AuthenticationHelper authenticationHelper;
+    private final PartService partService;
+    private final WarehousePartService warehousePartService;
+    private final WarehouseLogService warehouseLogService;
 
     @ModelAttribute("requestURI")
     public String requestURI(final HttpServletRequest request) {
@@ -121,4 +127,70 @@ public class WarehouseMvcController {
         }
     }
 
+
+    @GetMapping("/add/part/{id}")
+    public String showNewAddPartPage(@PathVariable int id, Model model, HttpSession session) {
+        try {
+            authenticationHelper.tryGetUser(session);
+        } catch (AuthenticationFailureException e) {
+            return "redirect:/Login";
+        }
+
+        Part part = partService.findPartEntityById(id);
+        List<Warehouse> warehouses = warehouseService.findAllWarehousesEntities();
+        model.addAttribute("part", part);
+        model.addAttribute("warehouses", warehouses);
+        model.addAttribute("warehousePart", new WarehousePart());
+
+        return "AddPartToWarehouseView";
+    }
+
+
+    @PostMapping("/add/part/{id}")
+    public String addPartToWarehouse(@Valid @ModelAttribute("warehousePart") WarehousePart warehousePart,
+                                     BindingResult bindingResult,
+                                     @PathVariable int id,
+                                     Model model,
+                                     HttpSession session) {
+
+        try {
+            authenticationHelper.tryGetUser(session);
+        } catch (AuthenticationFailureException e) {
+            return "redirect:/Login";
+        }
+
+        if (bindingResult.hasErrors()) {
+            Part part = partService.findPartEntityById(id);
+            List<Warehouse> warehouses = warehouseService.findAllWarehousesEntities();
+            model.addAttribute("part", part);
+            model.addAttribute("warehouses", warehouses);
+            return "AddPartToWarehouseView";
+        }
+
+        try {
+            Part part = partService.findPartEntityById(id);
+            Warehouse warehouse = warehouseService.findWarehouseEntityById(warehousePart.getWarehouse().getWarehouseId());
+
+            WarehousePart existingPart = warehousePartService.findWarehousePart(warehouse, part);
+            if (existingPart != null) {
+                warehousePartService.changeTheQuantity(existingPart, warehousePart.getQuantity());
+            } else {
+                warehousePartService.createWarehousePart(warehouse, part, warehousePart.getQuantity());
+            }
+
+            WarehouseLogInput logInput = WarehouseLogInput.builder()
+                    .part(part)
+                    .quantity(warehousePart.getQuantity())
+                    .warehouse(warehouse)
+                    .user(authenticationHelper.tryGetUser(session))
+                    .action(Action.ADD)
+                    .build();
+
+            warehouseLogService.createWarehouseLog(logInput);
+            return "redirect:/";
+        } catch (EntityNotFoundException | DuplicateEntityException e) {
+            model.addAttribute("error", e.getMessage());
+            return "ErrorView";
+        }
+    }
 }

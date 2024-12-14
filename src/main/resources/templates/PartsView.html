@@ -347,14 +347,14 @@
         <div class="parts-container">
             <div class="part-item" th:each="part : ${parts}">
                 <div>
-                    <a class="part-title" href="#" th:href="@{/parts/{id}(id=${part.partId})}" th:text="${part.title}">Part</a>
+                    <a class="part-title" href="#" th:href="@{/warehouses/parts/{id}(id=${part.partId})}" th:text="${part.title}">Part</a>
                 </div>
                 <div class="part-description" th:text="${part.description}">Description</div>
                 <div class="part-price" th:text="${part.price}">Price</div>
                 <div class="part-createdAt" th:text="${part.createdAt}">CreatedAt</div>
-                <div>
-                    <button class="buy-btn" onclick="openAddModal(${part.partId})">Buy</button>
-                </div>
+<!--                <div>-->
+<!--                    <button class="buy-btn" th:onclick="'location.href=\'/add/part/' + ${part.partId} + '\' '">Buy</button>                </div>-->
+                <a th:href="@{/warehouses/add/part/{id}(id=${part.partId})}" class="buy-btn">Buy</a>
             </div>
         </div>
 

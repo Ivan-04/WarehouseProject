@@ -14,11 +14,15 @@ public interface WarehouseService {
 
     List<WarehouseOutput> findAllWarehouses();
 
+    List<Warehouse> findAllWarehousesEntities();
+
     WarehouseOutput findWarehouseById(int id);
 
     Warehouse findWarehouseEntityById(int id);
 
     WarehouseOutput findWarehouseByName(String title);
+
+    Warehouse findWarehouseEntityByName(String title);
 
     WarehouseOutputId createWarehouse(WarehouseInput warehouseInput);
 

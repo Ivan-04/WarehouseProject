@@ -36,7 +36,7 @@ public class WarehousePartServiceImpl implements WarehousePartService {
     }
 
     @Override
-    public void createWarehouse(Warehouse warehouse, Part part, int quantityOfPart) {
+    public void createWarehousePart(Warehouse warehouse, Part part, int quantityOfPart) {
 
         WarehousePart warehousePart = WarehousePart.builder()
                 .warehouse(warehouse)

@@ -49,6 +49,12 @@ public class WarehouseServiceImpl implements WarehouseService {
     }
 
     @Override
+    public List<Warehouse> findAllWarehousesEntities() {
+        List<Warehouse> warehouses = warehouseRepository.findAll();
+        return warehouses;
+    }
+
+    @Override
     public WarehouseOutput findWarehouseById(int id){
         Warehouse warehouse = warehouseRepository.findByWarehouseId(id).orElseThrow(
                 () -> new EntityNotFoundException("Warehouse", id));
@@ -69,6 +75,14 @@ public class WarehouseServiceImpl implements WarehouseService {
                 () -> new EntityNotFoundException("Warehouse", "name", title));
 
         return conversionService.convert(warehouse, WarehouseOutput.class);
+    }
+
+    @Override
+    public Warehouse findWarehouseEntityByName(String title){
+        Warehouse warehouse = warehouseRepository.findByName(title).orElseThrow(
+                () -> new EntityNotFoundException("Warehouse", "name", title));
+
+        return warehouse;
     }
 
     @Override
@@ -129,7 +143,7 @@ public class WarehouseServiceImpl implements WarehouseService {
 
                 warehouseLogService.createWarehouseLog(warehouseLogInput);
 
-                warehousePartService.createWarehouse(warehouse, part, quantityOfPart);
+                warehousePartService.createWarehousePart(warehouse, part, quantityOfPart);
             }
         }
 
@@ -137,7 +151,7 @@ public class WarehouseServiceImpl implements WarehouseService {
             Warehouse warehouse = warehouseRepository.findWarehouseEntityByName(warehouseName);
             Part part = partService.getPartEntity(partTitle);
 
-            warehousePartService.createWarehouse(warehouse, part, quantityOfPart);
+            warehousePartService.createWarehousePart(warehouse, part, quantityOfPart);
 
             WarehouseLogInput warehouseLogInput = WarehouseLogInput.builder()
                     .user(user)
