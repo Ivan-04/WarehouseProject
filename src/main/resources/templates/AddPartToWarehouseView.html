@@ -135,10 +135,41 @@
         footer small {
             font-size: 14px;
         }
+
+        .total-price {
+            font-size: 16px;
+            color: #333;
+            text-align: left;
+        }
+
+        .total-price span {
+            font-weight: bold;
+            color: #0056b3;
+        }
     </style>
+    <script>
+        function calculateTotalPrice() {
+            const priceElement = document.getElementById("price");
+            const pricePerUnit = parseFloat(priceElement.getAttribute("data-price"));
+            const quantityInput = document.getElementById("quantity");
+            const totalPriceElement = document.getElementById("total-price");
+
+            // Проверка дали цената е валидно число
+            if (isNaN(pricePerUnit)) {
+                console.error("Price per unit is not a valid number.");
+                return;
+            }
+
+            quantityInput.addEventListener("input", () => {
+                const quantity = parseInt(quantityInput.value) || 0;
+                const totalPrice = quantity * pricePerUnit;
+                totalPriceElement.textContent = totalPrice.toFixed(2);
+            });
+        }
+    </script>
 
 </head>
-<body>
+<body onload="calculateTotalPrice()">
 
 <header class="site-header">
     <div class="navigation">
@@ -161,6 +192,11 @@
                         th:text="${warehouse.name}"></option>
             </select>
             <input type="number" th:field="*{quantity}" min="1" />
+
+            <div id="price" th:data-price="${part.price}" class="total-price">
+                Total Price: <span id="total-price">0.00</span> лв
+            </div>
+
             <button type="submit">Add Part</button>
         </form>
 
