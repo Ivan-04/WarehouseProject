@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Warehouse Details</title>
+    <title>Remove Part - Gudex Warehouse</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -61,57 +61,61 @@
         main {
             flex: 1;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
             text-align: center;
-            margin-top: 30px;
         }
 
-        .body-content {
+        .form-container {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 20px;
             width: 90%;
-            max-width: 600px;
-            margin: auto;
-            padding: 20px;
+            max-width: 500px;
             background: white;
+            padding: 20px;
             border: 1px solid #ddd;
-            border-radius: 5px;
+            border-radius: 10px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
-        .header h2 {
+        .form-container h2 {
             font-size: 24px;
             color: #333;
-            margin: 0;
+            margin-bottom: 20px;
         }
 
-        .meta-info {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            justify-content: space-between;
-            width: 100%;
-        }
-
-        .meta-info span {
-            flex: 1 1 30%;
-            background: linear-gradient(135deg, #f5f5f5, #ffffff);
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-            font-size: 16px;
+        .form-container label {
             font-weight: bold;
-            color: #444;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s, box-shadow 0.2s;
+            text-align: left;
+            width: 100%;
+            margin-bottom: 5px;
         }
 
-        .meta-info span:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        .form-container input[type="number"],
+        .form-container textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            background: #f9f9f9;
+            margin-bottom: 15px;
+        }
+
+        .form-container button {
+            background: #333;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .form-container button:hover {
+            background: #555;
         }
 
         footer {
@@ -125,30 +129,14 @@
         footer small {
             font-size: 14px;
         }
-
-        .use-btn {
-            background: none; /* Без фон */
-            color: #333; /* Основен текстов цвят */
-            border: 1px solid #ddd; /* Слаба рамка */
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-
-        .use-btn:hover {
-            background: #f0f0f0; /* Леко сив фон при задържане */
-            border-color: #bbb; /* По-тъмен бордер при задържане */
-        }
     </style>
 </head>
 <body>
 
 <header class="site-header">
     <span class="top-left-g">Gudex</span> <!-- Бяла буква G в горния ляв ъгъл -->
-
     <div class="container">
-        <h1 class="title">Warehouse Details</h1>
+        <h1 class="title">Remove Part from Warehouse</h1>
         <nav>
             <ul class="nav-links">
                 <li><a th:href="@{/}">Home</a></li>
@@ -158,31 +146,20 @@
     </div>
 </header>
 
-<div class="body-content">
-    <div class="header">
-        <h2 class="warehouse-name" th:text="${warehouse.name}">Warehouse Name</h2>
+<main>
+    <div class="form-container">
+        <h2 th:text="'Remove ' + ${part.title} + ' from ' + ${warehouse.name}">Remove Part</h2>
+        <form th:action="@{/warehouses/{warehouseId}/remove/part/{id}(warehouseId=${warehouse.warehouseId}, id=${part.partId})}" method="post">
+            <label for="quantity">Quantity to Remove:</label>
+            <input type="number" id="quantity" name="quantity" min="1" required>
+
+            <label for="description">Reason for Removal:</label>
+            <textarea id="description" name="description" placeholder="Enter reason for removing part" rows="4" required></textarea>
+
+            <button type="submit">Submit</button>
+        </form>
     </div>
-    <div class="parts-list">
-        <h3>Parts in this Warehouse</h3>
-        <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
-            <thead>
-            <tr>
-                <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Part Name</th>
-                <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Quantity</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="entry : ${partsOfTheWarehouse}">
-                <td style="border: 1px solid #ddd; padding: 8px;" th:text="${entry.key.title}">Part Name</td>
-                <td style="border: 1px solid #ddd; padding: 8px;" th:text="${entry.value}">Quantity</td>
-                <td style="border: 1px solid #ddd; padding: 8px; text-align: center;">
-                    <a class="use-btn" th:href="@{/warehouses/{warehouseId}/remove/part/{id}(warehouseId=${warehouse.warehouseId}, id=${entry.key.partId})}">Use</a>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
+</main>
 
 <footer>
     <div class="container">
@@ -190,5 +167,6 @@
             Gudex Warehouse</small>
     </div>
 </footer>
+
 </body>
 </html>

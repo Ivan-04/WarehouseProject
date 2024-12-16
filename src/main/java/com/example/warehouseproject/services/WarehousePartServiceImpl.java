@@ -64,4 +64,9 @@ public class WarehousePartServiceImpl implements WarehousePartService {
         warehousePartsRepository.save(warehousePart);
     }
 
+    @Override
+    public void deletePartOfThisType(WarehousePart warehousePart) {
+        warehousePartsRepository.delete(warehousePart);
+    }
+
 }

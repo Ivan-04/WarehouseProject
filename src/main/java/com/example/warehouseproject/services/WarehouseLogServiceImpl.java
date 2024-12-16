@@ -47,6 +47,7 @@ public class WarehouseLogServiceImpl implements WarehouseLogService {
                 .action(warehouseLogInput.getAction())
                 .quantity(warehouseLogInput.getQuantity())
                 .timestamp(LocalDateTime.now())
+                .description(warehouseLogInput.getText())
                 .build();
 
         warehouseLogRepository.save(warehouseLog);

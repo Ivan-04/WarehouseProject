@@ -42,4 +42,7 @@ public class WarehouseLog {
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime timestamp = LocalDateTime.now();
+
+    @Column(name = "description")
+    private String description;
 }

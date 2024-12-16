@@ -19,4 +19,6 @@ public interface WarehousePartService {
     void changeTheQuantity(WarehousePart warehousePart, int quantityOfPart);
 
     void removePartOfThisType(WarehousePart warehousePart, int quantityOfPart);
+
+    void deletePartOfThisType(WarehousePart warehousePart);
 }

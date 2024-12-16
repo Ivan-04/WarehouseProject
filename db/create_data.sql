@@ -75,6 +75,7 @@ CREATE TABLE warehouse_logs (
                                 action ENUM('ADD', 'REMOVE') NOT NULL,
                                 quantity INT NOT NULL CHECK (quantity > 0),
                                 timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                                description TEXT,
                                 FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
                                 FOREIGN KEY (warehouse_id) REFERENCES warehouse(id) ON DELETE CASCADE,
                                 FOREIGN KEY (part_id) REFERENCES parts(id) ON DELETE CASCADE

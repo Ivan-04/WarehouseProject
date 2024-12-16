@@ -24,4 +24,6 @@ public class WarehouseLogInput {
 
     private int quantity;
 
+    private String text;
+
 }

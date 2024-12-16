@@ -196,4 +196,80 @@ public class WarehouseMvcController {
             return "ErrorView";
         }
     }
+
+
+
+    @GetMapping("/{warehouseId}/remove/part/{id}")
+    public String showNewRemovePartPage(@PathVariable int warehouseId, @PathVariable int id,
+                                        Model model, HttpSession session) {
+        try {
+            authenticationHelper.tryGetUser(session);
+        } catch (AuthenticationFailureException e) {
+            return "redirect:/Login";
+        }
+
+        Part part = partService.findPartEntityById(id);
+        Warehouse warehouse = warehouseService.findWarehouseEntityById(warehouseId);
+        model.addAttribute("part", part);
+        model.addAttribute("warehouse", warehouse);
+        model.addAttribute("warehousePart", new WarehousePart());
+
+        return "RemovePartFromWarehouseView";
+    }
+
+
+    @PostMapping("/{warehouseId}/remove/part/{id}")
+    public String removePartFromWarehouse(
+                                     @PathVariable int warehouseId,
+                                     @PathVariable int id,
+                                     @RequestParam int quantity,
+                                     @RequestParam String description,
+                                     Model model,
+                                     HttpSession session) {
+
+        try {
+            authenticationHelper.tryGetUser(session);
+        } catch (AuthenticationFailureException e) {
+            return "redirect:/Login";
+        }
+
+//        if (bindingResult.hasErrors()) {
+//            Part part = partService.findPartEntityById(id);
+//            Warehouse warehouse = warehouseService.findWarehouseEntityById(warehouseId);
+//            model.addAttribute("part", part);
+//            model.addAttribute("warehouse", warehouse);
+//            return "RemovePartFromWarehouseView";
+//        }
+
+        try {
+            Part part = partService.findPartEntityById(id);
+            Warehouse warehouse = warehouseService.findWarehouseEntityById(warehouseId);
+            WarehousePart warehousePart = warehousePartService.findWarehousePart(warehouse, part);
+
+            if (quantity > warehousePart.getQuantity()) {
+                return "ErrorView";
+            }
+
+            if (quantity < warehousePart.getQuantity()) {
+                warehousePartService.removePartOfThisType(warehousePart, quantity);
+            } else if(quantity == warehousePart.getQuantity()){
+                warehousePartService.deletePartOfThisType(warehousePart);
+            }
+
+            WarehouseLogInput logInput = WarehouseLogInput.builder()
+                    .part(part)
+                    .quantity(quantity)
+                    .warehouse(warehouse)
+                    .user(authenticationHelper.tryGetUser(session))
+                    .action(Action.REMOVE)
+                    .text(description)
+                    .build();
+
+            warehouseLogService.createWarehouseLog(logInput);
+            return "redirect:/";
+        } catch (EntityNotFoundException | DuplicateEntityException e) {
+            model.addAttribute("error", e.getMessage());
+            return "ErrorView";
+        }
+    }
 }
