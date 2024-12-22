@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Warehouse Logs List - Gudex Warehouses</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #eaf4ff, #ffffff); /* Градиентен фон */
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Минимална височина на екрана */
+        }
+
+        header {
+            background: #333;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+
+        .top-left-g {
+            position: absolute;
+            top: 15px;
+            left: 20px;
+            font-size: 30px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+
+        main {
+            flex: 1; /* Заделя пространство за съдържание */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .body-content {
+            width: 100%;
+            max-width: 700px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .page-title {
+            font-size: 24px;
+            color: #07afe3;
+        }
+
+        .sorting-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            font-size: 14px;
+        }
+
+        .sorting-controls a {
+            text-decoration: none;
+            color: #333;
+            border: 1px solid #ddd;
+            padding: 5px 10px;
+            border-radius: 5px;
+            background-color: #f5f5f5;
+            transition: background-color 0.3s;
+        }
+
+        .sorting-controls a:hover {
+            background-color: #ddd;
+        }
+
+        .filter-form {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .filter-form input {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 200px;
+        }
+
+        .filter-btn {
+            background: #333;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .filter-btn:hover {
+            background: #555;
+        }
+
+        .warehouses-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .warehouse-item {
+            background: #fff;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .warehouse-description {
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .pagination a {
+            text-decoration: none;
+            color: #333;
+            padding: 5px 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .pagination a.active,
+        .pagination a:hover {
+            background: #333;
+            color: white;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px 0;
+            background: #333;
+            color: white;
+            margin-top: auto; /* Избутва футъра в най-долната част */
+        }
+
+        footer small {
+            font-size: 14px;
+        }
+
+
+        .warehouse-logs-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .warehouse-logs-table th,
+        .warehouse-logs-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .warehouse-logs-table th {
+            background-color: #f5f5f5;
+            font-weight: bold;
+        }
+
+        .warehouse-logs-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .warehouse-logs-table tr:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+
+</head>
+<body>
+
+
+<header class="site-header">
+    <div class="container">
+        <span class="top-left-g">Gudex</span>
+        <nav>
+            <ul class="nav-links">
+                <li><a th:href="@{/}">Home</a></li>
+                <li th:if="${!isAuthenticated}"><a th:href="@{/auth/login}">Login</a></li>
+                <li th:if="${!isAuthenticated}"><a th:href="@{/auth/register}">Register</a></li>
+                <li th:if="${isAuthenticated}"><a th:href="@{/auth/logout}">Logout</a></li>
+                <li th:if="${isAuthenticated}"><a th:href="@{/parts}">Parts List</a></li>
+
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <div class="body-content">
+        <header class="header">
+            <h2 class="page-title">Warehouse Logs List</h2>
+        </header>
+
+        <div class="sorting-controls">
+            <a th:href="@{/warehouses/logs(page=${currentPage}, size=${size}, sortBy='timestamp', sortDirection=${sortDirection == 'asc' ? 'desc' : 'asc'})}">
+                Email <span
+                    th:text="${sortBy == 'timestamp'} ? (sortDirection == 'asc' ? '▲' : '▼') : ''"></span>
+            </a>
+        </div>
+
+        <form method="get" action="/warehouses/logs" class="filter-form">
+            <label>
+                <input type="text" name="email" placeholder="Email" th:value="${email}"/>
+            </label>
+            <label>
+                <input type="text" name="part" placeholder="Part" th:value="${partName}"/>
+            </label>
+            <label>
+                <input type="text" name="warehouse" placeholder="Warehouse" th:value="${warehouseName}"/>
+            </label>
+            <label>
+                <select name="action">
+                    <option value="" th:text="'All Actions'"></option>
+                    <option th:each="action : ${actions}"
+                            th:value="${action}"
+                            th:text="${action}">
+                    </option>
+                </select>
+            </label>
+
+            <button type="submit" class="filter-btn">Filter</button>
+        </form>
+
+
+        <table class="warehouse-logs-table">
+            <thead>
+            <tr>
+                <th>Email</th>
+                <th>Part</th>
+                <th>Warehouse</th>
+                <th>Action</th>
+                <th>Quantity</th>
+                <th>Timestamp</th>
+                <th>Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="warehouseLog : ${warehouseLogs}">
+                <td th:text="${warehouseLog.user.email}">Email</td>
+                <td th:text="${warehouseLog.part.title}">Part</td>
+                <td th:text="${warehouseLog.warehouse.name}">Warehouse</td>
+                <td th:text="${warehouseLog.action.name()}">Action</td>
+                <td th:text="${warehouseLog.quantity}">Quantity</td>
+                <td th:text="${warehouseLog.timestamp}">Timestamp</td>
+                <td th:text="${warehouseLog.description}">Description</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="pagination">
+            <a th:if="${currentPage > 0}"
+               th:href="@{/warehouses/logs(page=${currentPage - 1}, size=${size}, sortBy=${sortBy}, sortDirection=${sortDirection})}">
+                Previous
+            </a>
+
+            <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+        <a th:classappend="${i == currentPage} ? 'active'"
+           th:href="@{/warehouses/logs(page=${i}, size=${size}, sortBy=${sortBy}, sortDirection=${sortDirection})}"
+           th:text="${i + 1}">1</a>
+    </span>
+            <a th:if="${currentPage < totalPages - 1}"
+               th:href="@{/warehouses/logs(page=${currentPage + 1}, size=${size}, sortBy=${sortBy}, sortDirection=${sortDirection})}">
+                Next
+            </a>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <div class="container">
+        <small th:text="${'© Copyright ' + #dates.year(#dates.createNow()) + ' Gudex Warehouse'}">© 2024
+            Gudex Warehouse</small>
+    </div>
+</footer>
+</body>
+</html>

@@ -99,7 +99,7 @@
         <a href="#" th:if="${isAuthenticated}" th:href="@{/parts}">Parts List</a>
         <a href="#" th:if="${isAuthenticated}" th:href="@{/warehouses}">Warehouses List</a>
         <a href="#" th:if="${isAuthenticated != null and isAuthenticated} and (${session.isManager != null and session.isManager} or ${session.isOwner != null and session.isOwner})" th:href="@{/warehouses/new}">Create Warehouse</a>
-
+        <a href="#" th:if="${isAuthenticated != null and isAuthenticated} and (${session.isManager != null and session.isManager} or ${session.isOwner != null and session.isOwner})" th:href="@{/warehouses/logs}">Warehouse Logs</a>
         <!--        <a href="#" th:if="${isAuthenticated && session.isAdmin}" th:href="@{/admin}">Admin Panel</a>-->
 <!--        <span th:if="${isAuthenticated}">-->
 <!--            <a href="#" th:if="${session.isModerator}" th:href="@{/admin}">Moderator Panel</a>-->
