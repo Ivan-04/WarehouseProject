@@ -1,11 +1,15 @@
 package com.example.warehouseproject.UserServiceImplTests;
 
 import com.example.warehouseproject.HelperClass;
+import com.example.warehouseproject.exceptions.DuplicateEntityException;
 import com.example.warehouseproject.exceptions.EntityNotFoundException;
+import com.example.warehouseproject.models.Role;
 import com.example.warehouseproject.models.User;
+import com.example.warehouseproject.models.dtos.Register;
 import com.example.warehouseproject.models.dtos.UserOutput;
 import com.example.warehouseproject.repositories.UserRepository;
 import com.example.warehouseproject.services.UserServiceImpl;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -13,6 +17,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.convert.ConversionService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,6 +29,9 @@ public class UserServiceImplTests {
 
     @Mock
     UserRepository mockRepository;
+
+    @Mock
+    PasswordEncoder mockEncoder;
 
     @Mock
     ConversionService conversionService;
@@ -138,5 +146,46 @@ public class UserServiceImplTests {
 
         boolean result = userService.existsByEmail("ppp.jjj@example.com");
         assertTrue(result);
+    }
+
+    @Test
+    public void create_Should_ThrowException_When_UserWithSameEmailExist() {
+        User testUser = HelperClass.createMockUserOwner();
+
+        Mockito.when(mockRepository.findUSerByEmail(testUser.getEmail())).thenReturn(testUser);
+        Mockito.when(mockEncoder.encode(Mockito.anyString())).thenReturn("hashedPassword");
+
+        Register register = new Register();
+        register.setFirstName(testUser.getFirstName());
+        register.setLastName(testUser.getLastName());
+        register.setEmail(testUser.getEmail());
+        register.setPassword(testUser.getPassword());
+        register.setRole(testUser.getRole());
+
+        Assertions.assertThrows(DuplicateEntityException.class,
+                () -> userService.createUser(register));
+
+    }
+
+    @Test
+    public void create_Should_CreateUser_When_UserFieldsAreCorrect() {
+
+        Mockito.when(mockEncoder.encode(Mockito.anyString())).thenReturn("hashedPassword");
+        Mockito.when(mockRepository.existsByEmail("p.petrov@example.com")).thenReturn(true);
+
+        Register register = new Register();
+        register.setFirstName("Petar");
+        register.setLastName("Petrov");
+        register.setEmail("p.petrov@example.com");
+        register.setPassword("13456789");
+        register.setRole(Role.OPERATOR);
+
+        userService.createUser(register);
+
+        boolean bool = userService.existsByEmail("p.petrov@example.com");
+
+        assertTrue(bool);
+
+
     }
 }
