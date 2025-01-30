@@ -6,11 +6,13 @@ import com.example.warehouseproject.exceptions.EntityNotFoundException;
 import com.example.warehouseproject.helpers.AuthenticationHelper;
 import com.example.warehouseproject.models.Part;
 import com.example.warehouseproject.models.User;
+import com.example.warehouseproject.models.WarehousePart;
 import com.example.warehouseproject.models.dtos.PartInput;
 import com.example.warehouseproject.models.dtos.PartOutput;
 import com.example.warehouseproject.models.dtos.WarehouseInput;
 import com.example.warehouseproject.services.contracts.PartService;
 import com.example.warehouseproject.services.contracts.UserService;
+import com.example.warehouseproject.services.contracts.WarehousePartService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -25,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
+
 
 @RequiredArgsConstructor
 @Controller
@@ -34,6 +36,7 @@ import java.util.UUID;
 public class PartMvcController {
 
     private final PartService partService;
+    private final WarehousePartService warehousePartService;
     private final AuthenticationHelper authenticationHelper;
 
     @ModelAttribute("requestURI")
@@ -71,6 +74,29 @@ public class PartMvcController {
         //model.addAttribute("price", price);
 
         return "PartsView";
+    }
+
+    @GetMapping("/all/warehouse/parts")
+    public String getWarehouseParts(Model model,
+                           @RequestParam(value = "title", required = false) String title,
+                           @RequestParam(value = "page", defaultValue = "0") int page,
+                           @RequestParam(value = "size", defaultValue = "5") int size,
+                           @RequestParam(value = "sortBy", defaultValue = "title") String sortBy,
+                           @RequestParam(value = "sortDirection", defaultValue = "asc") String sortDirection) {
+
+        System.out.println("Received title: " + title);
+
+        List<WarehousePart> warehousePartsPage = warehousePartService.getWarehousePartsWithFilters(title);
+
+        model.addAttribute("warehouseParts", warehousePartsPage);
+        model.addAttribute("totalPages", warehousePartsPage);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("size", size);
+        model.addAttribute("sortBy", sortBy);
+        model.addAttribute("sortDirection", sortDirection);
+        model.addAttribute("title", title);
+
+        return "AllWarehousePartWithThisName";
     }
 
     @GetMapping("/{id}")

@@ -19,6 +19,8 @@ public interface PartService {
 
     PartOutput findPartByTitle(String title);
 
+    Part findPartEntityByTitle(String title);
+
     PartOutputId createPart(PartInput partInput);
 
     Part getPartEntity(String title);

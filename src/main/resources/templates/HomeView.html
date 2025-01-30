@@ -50,6 +50,39 @@
             color: white;
         }
 
+        .navigation .search-container {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .navigation .search-button {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 24px;
+            color: white;
+        }
+
+        .navigation .search-button:hover {
+            color: #ccc;
+        }
+
+        .navigation .search-input {
+            display: none;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .navigation .search-input.visible {
+            display: inline-block;
+        }
+
         .content {
             flex: 1;
             display: flex;
@@ -89,6 +122,31 @@
             font-size: 14px;
         }
     </style>
+    <script>
+        function toggleSearch() {
+            const searchInput = document.getElementById('search-input');
+            const submitBtn = document.getElementById('submit-btn');
+
+            if (searchInput.style.display === "none" || searchInput.style.display === "") {
+                searchInput.style.display = "inline-block"; // Показва полето
+                submitBtn.style.display = "inline-block";  // Показва бутона "Go"
+                searchInput.focus(); // Фокусира полето
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const searchInput = document.getElementById('search-input');
+
+            searchInput.addEventListener("keydown", function(event) {
+                if (event.key === "Enter") {
+                    event.preventDefault(); // Предотвратява презареждане
+                    document.querySelector(".search-container form").submit();
+                }
+            });
+        });
+    </script>
+
+
 </head>
 <body>
 <div class="navigation">
@@ -100,12 +158,26 @@
         <a href="#" th:if="${isAuthenticated}" th:href="@{/warehouses}">Warehouses List</a>
         <a href="#" th:if="${isAuthenticated != null and isAuthenticated} and (${session.isManager != null and session.isManager} or ${session.isOwner != null and session.isOwner})" th:href="@{/warehouses/new}">Create Warehouse</a>
         <a href="#" th:if="${isAuthenticated != null and isAuthenticated} and (${session.isManager != null and session.isManager} or ${session.isOwner != null and session.isOwner})" th:href="@{/warehouses/logs}">Warehouse Logs</a>
-        <!--        <a href="#" th:if="${isAuthenticated && session.isAdmin}" th:href="@{/admin}">Admin Panel</a>-->
-<!--        <span th:if="${isAuthenticated}">-->
-<!--            <a href="#" th:if="${session.isModerator}" th:href="@{/admin}">Moderator Panel</a>-->
-<!--        </span>-->
+
         <a href="#" th:if="${isAuthenticated}" th:href="@{/auth/logout}">Logout</a>
     </h3>
+
+    <div class="search-container" th:if="${isAuthenticated}">
+        <form th:action="@{/parts/all/warehouse/parts}" method="get" style="display: flex; gap: 10px;">
+            <input
+                    type="text"
+                    id="search-input"
+                    class="search-input"
+                    name="title"
+                    placeholder="Search available parts..."
+                    style="display: none;"
+            />
+            <button type="button" class="search-button" onclick="toggleSearch()">🔍</button>
+            <button type="submit" class="search-button" id="submit-btn" style="display: none;">Go</button>
+        </form>
+    </div>
+
+
 </div>
 
 <div class="content">

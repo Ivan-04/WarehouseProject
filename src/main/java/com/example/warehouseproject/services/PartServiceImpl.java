@@ -66,6 +66,13 @@ public class PartServiceImpl implements PartService {
     }
 
     @Override
+    public Part findPartEntityByTitle(String title){
+
+        return partRepository.findPartByTitle(title).orElseThrow(
+                () -> new EntityNotFoundException("Part", "title",title));
+    }
+
+    @Override
     public PartOutputId createPart(PartInput partInput) {
 
         Part part = Part.builder()
