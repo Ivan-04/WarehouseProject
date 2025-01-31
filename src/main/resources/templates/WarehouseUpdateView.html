@@ -3,6 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <title>Edit Warehouse Name</title>
+  <style>
+    /* 🌟 Основни стилове */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #333;
+      background: linear-gradient(to bottom, #eaf4ff, #ffffff);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100vh;
+    }
+
+    /* 🔝 Навигационна лента */
+    .navigation {
+      background: #333;
+      color: white;
+      padding: 15px 0;
+      text-align: center;
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+    }
+
+    .navigation h3 {
+      margin: 0;
+    }
+
+    .navigation a {
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 18px;
+      padding: 10px 20px;
+    }
+
+    .navigation a:hover {
+      text-decoration: underline;
+    }
+
+    /* 📌 Центрирана форма, преместена нагоре */
+    .body-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex-grow: 1;
+      width: 100%;
+      margin-top: -50px; /* Преместваме формата по-нагоре */
+    }
+
+    .header h2 {
+      font-size: 32px;
+      color: #0056b3;
+      text-shadow: 2px 2px 0px #ccc;
+      margin-bottom: 30px;
+    }
+
+    /* 📄 Форма */
+    .post-form {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      width: 400px;
+      position: relative;
+      top: -30px; /* Преместваме формата малко нагоре */
+    }
+
+    .post-form label {
+      display: block;
+      font-size: 16px;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .post-form input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+
+    /* 🔴 Грешки при валидация */
+    .error {
+      color: red;
+      font-size: 14px;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    /* 💾 Стил за бутона */
+    .post-form input[type="submit"] {
+      background-color: #0056b3;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 18px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: 0.3s;
+      width: 100%;
+    }
+
+    .post-form input[type="submit"]:hover {
+      background-color: #003d80;
+    }
+  </style>
 </head>
 <body>
 <div class="navigation">
