@@ -2,14 +2,11 @@ package com.example.warehouseproject.services;
 
 import com.example.warehouseproject.exceptions.DuplicateEntityException;
 import com.example.warehouseproject.exceptions.EntityNotFoundException;
+import com.example.warehouseproject.exceptions.InvalidDataException;
 import com.example.warehouseproject.models.*;
 import com.example.warehouseproject.models.dtos.*;
 import com.example.warehouseproject.repositories.WarehouseRepository;
-import com.example.warehouseproject.services.contracts.PartService;
-import com.example.warehouseproject.services.contracts.WarehouseLogService;
-import com.example.warehouseproject.services.contracts.WarehousePartService;
-import com.example.warehouseproject.services.contracts.WarehouseService;
-import jakarta.persistence.criteria.CriteriaBuilder;
+import com.example.warehouseproject.services.contracts.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
@@ -18,7 +15,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +29,7 @@ public class WarehouseServiceImpl implements WarehouseService {
     private final WarehousePartService warehousePartService;
     private final PartService partService;
     private final WarehouseLogService warehouseLogService;
+    private final UserService userService;
 
 
     @Override
@@ -120,6 +117,21 @@ public class WarehouseServiceImpl implements WarehouseService {
         warehouseRepository.save(warehouse);
 
         return conversionService.convert(warehouse, WarehouseOutputId.class);
+    }
+
+    @Override
+    public void changeNameOfWarehouse(int id, String name, String email) {
+        User user = userService.findUserEntityByEmail(email);
+        if(user.getRole().equals(Role.OWNER) || user.getRole().equals(Role.MANAGER)){
+            Warehouse warehouse = warehouseRepository.findWarehouseEntityByWarehouseId(id);
+            if(name.length() > 50){
+                throw new InvalidDataException("Name can not be more than 50 symbols");
+            }
+
+            warehouse.setName(name);
+
+            warehouseRepository.save(warehouse);
+        }
     }
 
 

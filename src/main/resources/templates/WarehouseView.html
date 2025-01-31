@@ -140,6 +140,20 @@
             background: #f0f0f0; /* Леко сив фон при задържане */
             border-color: #bbb; /* По-тъмен бордер при задържане */
         }
+
+        .edit-button {
+            font-size: 22px; /* Големина на иконката */
+            text-decoration: none;
+            color: #333; /* Тъмен цвят */
+            padding: 5px 10px;
+            border-radius: 50%;
+            transition: background 0.3s;
+        }
+
+        .edit-button:hover {
+            background: #ddd; /* Светлосив фон при задържане */
+        }
+
     </style>
 </head>
 <body>
@@ -160,7 +174,14 @@
 
 <div class="body-content">
     <div class="header">
-        <h2 class="warehouse-name" th:text="${warehouse.name}">Warehouse Name</h2>
+        <h2 class="warehouse-name" th:text="${warehouse.name}" style="display: inline-block; margin-right: 10px;">
+            Warehouse Name
+        </h2>
+
+        <!-- Бутон с иконка "лагерче" за редактиране на склада -->
+        <a th:href="@{/warehouses/{id}/change/name(id=${warehouse.warehouseId})}" class="edit-button">
+            ⚙️
+        </a>
     </div>
     <div class="parts-list">
         <h3>Parts in this Warehouse</h3>

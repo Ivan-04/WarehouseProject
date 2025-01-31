@@ -1,8 +1,6 @@
 package com.example.warehouseproject.controllers.mvc;
 
-import com.example.warehouseproject.exceptions.AuthenticationFailureException;
-import com.example.warehouseproject.exceptions.DuplicateEntityException;
-import com.example.warehouseproject.exceptions.EntityNotFoundException;
+import com.example.warehouseproject.exceptions.*;
 import com.example.warehouseproject.helpers.AuthenticationHelper;
 import com.example.warehouseproject.models.*;
 import com.example.warehouseproject.models.dtos.WarehouseInput;
@@ -16,6 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -197,7 +196,60 @@ public class WarehouseMvcController {
         }
     }
 
+    @GetMapping("/{id}/change/name")
+    public String showChangeNamePage(@PathVariable int id, Model model, HttpSession session) {
+        try {
+            authenticationHelper.tryGetUser(session);
+        } catch (AuthenticationFailureException e) {
+            return "redirect:/Login";
+        }
 
+        Warehouse warehouse = warehouseService.findWarehouseEntityById(id);
+        model.addAttribute("warehouse", warehouse);
+
+        return "WarehouseUpdateView";
+    }
+
+    @PostMapping("/{id}/change/name")
+    public String changeNameOfWarehouse(@PathVariable int id, @Valid @ModelAttribute("warehouse") WarehouseInput warehouseInput,
+                                        BindingResult bindingResult, Model model, HttpSession session) {
+
+        User user;
+        try{
+            user = authenticationHelper.tryGetUser(session);
+        } catch (AuthenticationFailureException e) {
+            return "redirect:/Login";
+        }
+
+        if (bindingResult.hasErrors()) {
+            return "WarehouseUpdateView";
+        }
+
+        try {
+            warehouseService.changeNameOfWarehouse(id, warehouseInput.getName(), user.getEmail());
+            return "redirect:/warehouses/" + id;
+        } catch (EntityNotFoundException e) {
+            model.addAttribute("statusCode", HttpStatus.NOT_FOUND.getReasonPhrase());
+            model.addAttribute("error", e.getMessage());
+            return "ErrorView";
+        } catch (DuplicateEntityException e) {
+            bindingResult.rejectValue("name", "duplicate_post", e.getMessage());
+            return "WarehouseUpdateView";
+        } catch (AuthorizationException e) {
+            model.addAttribute("error", e.getMessage());
+            return "AccessDeniedView";
+        }catch (InvalidDataException e) {
+            model.addAttribute("error", e.getMessage());
+            return "WarehouseUpdateView";
+        } catch (UnauthorizedOperationException e){
+            model.addAttribute("statusCode", HttpStatus.FORBIDDEN.getReasonPhrase());
+            model.addAttribute("error", e.getMessage());
+            return "ErrorView";
+        }catch (DataIntegrityViolationException e) {  // 💡 Нов блок за MySQL грешки
+            model.addAttribute("error", "Въведеното име е твърде дълго! Максимум 50 символа.");
+            return "WarehouseUpdateView";
+        }
+    }
 
     @GetMapping("/{warehouseId}/remove/part/{id}")
     public String showNewRemovePartPage(@PathVariable int warehouseId, @PathVariable int id,

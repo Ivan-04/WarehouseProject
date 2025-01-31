@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Warehouse Name</title>
+</head>
+<body>
+<div class="navigation">
+  <h3>
+    <a href="#" th:href="@{/}" th:text="#{navigation.home}">Home</a>
+  </h3>
+</div>
+
+<div class="body-content">
+  <header class="header">
+    <h2 th:text="#{subtitle3}">Edit Warehouse</h2>
+  </header>
+
+  <div class="post-form">
+    <form action="#" th:action="@{/warehouses/{id}/change/name(id=${id})}" th:object="${warehouse}" method="post">
+      <label th:text="#{warehouse.label.name}">Name</label>
+      <input type="text" th:field="*{name}" placeholder="Enter warehouse name"/>
+      <label class="error" th:errors="*{name}">Name error placeholder</label>
+
+      <input type="submit" value="Save"/>
+    </form>
+  </div>
+</div>
+</body>
+</html>

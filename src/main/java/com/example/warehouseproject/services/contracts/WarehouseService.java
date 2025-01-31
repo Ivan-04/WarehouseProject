@@ -30,6 +30,8 @@ public interface WarehouseService {
 
     WarehouseOutputId createWarehouse(WarehouseInput warehouseInput);
 
+    void changeNameOfWarehouse(int id, String name, String email);
+
     void addPartToWarehouse(User user, String warehouseName, String partTitle, int quantityOfPart);
 
     void removePartFromWarehouse(User user, String warehouseName, String partTitle, int quantityOfPart);
