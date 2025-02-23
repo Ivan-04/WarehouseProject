@@ -1,9 +1,13 @@
 package com.example.warehouseproject.WarehouseServiceApplicationTests;
 
 import com.example.warehouseproject.HelperClass;
+import com.example.warehouseproject.exceptions.DuplicateEntityException;
 import com.example.warehouseproject.exceptions.EntityNotFoundException;
+import com.example.warehouseproject.models.User;
 import com.example.warehouseproject.models.Warehouse;
+import com.example.warehouseproject.models.dtos.WarehouseInput;
 import com.example.warehouseproject.models.dtos.WarehouseOutput;
+import com.example.warehouseproject.models.dtos.WarehouseOutputId;
 import com.example.warehouseproject.repositories.WarehousePartsRepository;
 import com.example.warehouseproject.repositories.WarehouseRepository;
 import com.example.warehouseproject.services.WarehouseServiceImpl;
@@ -208,6 +212,42 @@ public class WarehouseServiceImplTests {
 
     }
 
+
+    @Test
+    public void createWarehouse_Should_Return_WarehouseOutputId_When_Successful(){
+
+        WarehouseInput warehouseInput = new WarehouseInput();
+        warehouseInput.setName("Warehouse");
+
+        Warehouse warehouse = Warehouse.builder()
+                        .warehouseId(0)
+                                .name("Warehouse")
+                                        .build();
+
+        Assertions.assertEquals(mockRepository.findWarehouseEntityByName("Warehouse"), null);
+
+        WarehouseOutputId warehouseOutputId = warehouseService.createWarehouse(warehouseInput);
+
+        Mockito.verify(mockRepository, Mockito.times(1)).save(warehouse);
+    }
+
+    @Test
+    public void createWarehouse_Should_Throw_Exception_When_TheSameWarehouse_Exists(){
+
+        WarehouseInput warehouseInput = new WarehouseInput();
+        warehouseInput.setName("Warehouse");
+
+        Warehouse warehouse = Warehouse.builder()
+                        .name("Warehouse")
+                .build();
+
+        Mockito.when(mockRepository.findWarehouseEntityByName("Warehouse")).thenReturn(warehouse);
+
+        Assertions.assertThrows(DuplicateEntityException.class, () -> warehouseService.createWarehouse(warehouseInput));
+
+        Mockito.verify(mockRepository, Mockito.never()).save(Mockito.any(Warehouse.class));
+
+    }
 
 
 
