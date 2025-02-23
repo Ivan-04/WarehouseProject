@@ -2,6 +2,7 @@ package com.example.warehouseproject;
 
 import com.example.warehouseproject.models.Role;
 import com.example.warehouseproject.models.User;
+import com.example.warehouseproject.models.Warehouse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class HelperClass {
@@ -34,5 +35,14 @@ public class HelperClass {
         mockUser.setRole(Role.OWNER);
 
         return mockUser;
+    }
+
+    public static Warehouse createMockWarehouse(){
+        var mockWarehouse = new Warehouse();
+
+        mockWarehouse.setWarehouseId(1);
+        mockWarehouse.setName("Warehouse");
+
+        return mockWarehouse;
     }
 }

@@ -1,20 +1,15 @@
-package com.example.warehouseproject.UserServiceImplTests;
+package com.example.warehouseproject.WarehouseServiceApplicationTests;
 
 import com.example.warehouseproject.HelperClass;
-import com.example.warehouseproject.models.Part;
-import com.example.warehouseproject.models.User;
+import com.example.warehouseproject.exceptions.EntityNotFoundException;
 import com.example.warehouseproject.models.Warehouse;
-import com.example.warehouseproject.models.WarehousePart;
-import com.example.warehouseproject.models.dtos.*;
-import com.example.warehouseproject.repositories.UserRepository;
+import com.example.warehouseproject.models.dtos.WarehouseOutput;
 import com.example.warehouseproject.repositories.WarehousePartsRepository;
 import com.example.warehouseproject.repositories.WarehouseRepository;
-import com.example.warehouseproject.services.PartServiceImpl;
-import com.example.warehouseproject.services.UserServiceImpl;
-import com.example.warehouseproject.services.WarehousePartServiceImpl;
 import com.example.warehouseproject.services.WarehouseServiceImpl;
 import com.example.warehouseproject.services.contracts.PartService;
 import com.example.warehouseproject.services.contracts.WarehousePartService;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -23,12 +18,9 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.*;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -117,6 +109,107 @@ public class WarehouseServiceImplTests {
         Mockito.verify(mockRepository, Mockito.times(1))
                 .findWarehousesByMultipleFields("%" + nameFilter + "%", pageable);
     }
+
+
+    @Test
+    public void get_Should_Return_AllWarehouses(){
+
+        Warehouse mockWarehouse = HelperClass.createMockWarehouse();
+
+        Mockito.when(mockRepository.findAll()).thenReturn(List.of(mockWarehouse));
+
+        assertEquals(1, warehouseService.findAllWarehouses().size());
+
+    }
+
+
+    @Test
+    public void get_Should_Return_AllWarehouseEntities(){
+
+        Warehouse mockWarehouse = HelperClass.createMockWarehouse();
+
+        Mockito.when(mockRepository.findAll()).thenReturn(List.of(mockWarehouse));
+
+        assertEquals(1, warehouseService.findAllWarehousesEntities().size());
+
+    }
+
+
+
+    @Test
+    public void get_Should_Return_Warehouse_WhenProperIdIsProvided(){
+
+        Warehouse mockWarehouse = HelperClass.createMockWarehouse();
+
+        Mockito.when(mockRepository.findByWarehouseId(1)).thenReturn(Optional.of(mockWarehouse));
+
+        assertEquals(warehouseService.findWarehouseById(1), conversionService.convert(mockWarehouse, WarehouseOutput.class));
+
+    }
+
+    @Test
+    public void get_Should_Return_WarehouseEntity_WhenProperIdIsProvided(){
+
+        Warehouse mockWarehouse = HelperClass.createMockWarehouse();
+
+        Mockito.when(mockRepository.findByWarehouseId(1)).thenReturn(Optional.of(mockWarehouse));
+
+        assertEquals(warehouseService.findWarehouseEntityById(1), mockWarehouse);
+
+    }
+
+    @Test
+    public void get_Should_Throw_EntityNotFoundException_WhenWrongIdIsProvided(){
+
+        Assertions.assertThrows(EntityNotFoundException.class, () -> warehouseService.findWarehouseById(1));
+
+    }
+
+    @Test
+    public void get_WarehouseEntity_Should_Throw_EntityNotFoundException_WhenWrongIdIsProvided(){
+
+        Assertions.assertThrows(EntityNotFoundException.class, () -> warehouseService.findWarehouseEntityById(1));
+
+    }
+
+    @Test
+    public void get_Should_Return_Warehouse_WhenProperNameIsProvided(){
+
+        Warehouse mockWarehouse = HelperClass.createMockWarehouse();
+
+        Mockito.when(mockRepository.findByName("Warehouse 1")).thenReturn(Optional.of(mockWarehouse));
+
+        assertEquals(warehouseService.findWarehouseByName("Warehouse 1"), conversionService.convert(mockWarehouse, WarehouseOutput.class));
+
+    }
+
+    @Test
+    public void get_Warehouse_Should_Throw_EntityNotFoundException_WhenWrongNameIsProvided(){
+
+        Assertions.assertThrows(EntityNotFoundException.class, () -> warehouseService.findWarehouseByName("Warehouse 1"));
+
+    }
+
+    @Test
+    public void get_Should_Return_WarehouseEntity_WhenProperNameIsProvided(){
+
+        Warehouse mockWarehouse = HelperClass.createMockWarehouse();
+
+        Mockito.when(mockRepository.findByName("Warehouse 1")).thenReturn(Optional.of(mockWarehouse));
+
+        assertEquals(warehouseService.findWarehouseEntityByName("Warehouse 1"), mockWarehouse);
+
+    }
+
+    @Test
+    public void get_WarehouseEntity_Should_Throw_EntityNotFoundException_WhenWrongNameIsProvided(){
+
+        Assertions.assertThrows(EntityNotFoundException.class, () -> warehouseService.findWarehouseEntityByName("Warehouse 1"));
+
+    }
+
+
+
 
 
 //    @Test
