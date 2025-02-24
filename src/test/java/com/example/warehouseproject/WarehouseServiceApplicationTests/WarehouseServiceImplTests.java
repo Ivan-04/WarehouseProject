@@ -5,11 +5,14 @@ import com.example.warehouseproject.exceptions.DuplicateEntityException;
 import com.example.warehouseproject.exceptions.EntityNotFoundException;
 import com.example.warehouseproject.exceptions.InvalidDataException;
 import com.example.warehouseproject.exceptions.UnauthorizedOperationException;
+import com.example.warehouseproject.models.Part;
 import com.example.warehouseproject.models.User;
 import com.example.warehouseproject.models.Warehouse;
+import com.example.warehouseproject.models.WarehousePart;
 import com.example.warehouseproject.models.dtos.WarehouseInput;
 import com.example.warehouseproject.models.dtos.WarehouseOutput;
 import com.example.warehouseproject.models.dtos.WarehouseOutputId;
+import com.example.warehouseproject.models.dtos.WarehousePartOutput;
 import com.example.warehouseproject.repositories.WarehousePartsRepository;
 import com.example.warehouseproject.repositories.WarehouseRepository;
 import com.example.warehouseproject.services.UserServiceImpl;
@@ -26,8 +29,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.*;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -118,6 +120,30 @@ public class WarehouseServiceImplTests {
 
         Mockito.verify(mockRepository, Mockito.times(1))
                 .findWarehousesByMultipleFields("%" + nameFilter + "%", pageable);
+    }
+
+    @Test
+    public void get_AllParts_Of_Warehouse_Should_Return_The_Parts(){
+        Warehouse warehouse = HelperClass.createMockWarehouse();
+        Part part = HelperClass.createMockPart();
+
+        WarehousePart warehousePart = new WarehousePart(1, warehouse, part, 10);
+
+        Mockito.when(mockRepository.findWarehouseEntityByWarehouseId(1)).thenReturn(warehouse);
+
+        List<WarehousePartOutput> warehousePartOutputs = List.of(new WarehousePartOutput("Warehouse", "Hammer", 10));
+
+        Mockito.when(warehousePartService.findAllWarehousesParts()).thenReturn(warehousePartOutputs);
+
+        Mockito.when(mockPartService.getPartEntity("Hammer")).thenReturn(part);
+
+        Map<Part, Integer> result = new HashMap<>();
+        result.put(part, 10);
+
+        Map<Part, Integer> currResult = warehouseService.getAllPartsOfWarehouse(1);
+
+        assertEquals(result, currResult);
+
     }
 
 
@@ -308,4 +334,6 @@ public class WarehouseServiceImplTests {
                                 "WarehouseeNewwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
                                 user.getEmail()));
     }
+
+
 }

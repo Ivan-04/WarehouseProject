@@ -1,9 +1,12 @@
 package com.example.warehouseproject;
 
+import com.example.warehouseproject.models.Part;
 import com.example.warehouseproject.models.Role;
 import com.example.warehouseproject.models.User;
 import com.example.warehouseproject.models.Warehouse;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.time.LocalDateTime;
 
 public class HelperClass {
 
@@ -44,5 +47,17 @@ public class HelperClass {
         mockWarehouse.setName("Warehouse");
 
         return mockWarehouse;
+    }
+
+    public static Part createMockPart(){
+        var mockPart = new Part();
+
+        mockPart.setTitle("Hammer");
+        mockPart.setPartId(1);
+        mockPart.setPrice(10.50);
+        mockPart.setCreatedAt(LocalDateTime.now());
+        mockPart.setDescription("Hammer is hammer");
+
+        return mockPart;
     }
 }

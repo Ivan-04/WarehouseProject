@@ -45,8 +45,11 @@ public class WarehouseServiceImpl implements WarehouseService {
     @Override
     public Map<Part, Integer> getAllPartsOfWarehouse(int id){
         Warehouse warehouse = warehouseRepository.findWarehouseEntityByWarehouseId(id);
-        List<WarehousePartOutput> warehousePartList = warehousePartService.findAllWarehousesParts().stream().filter(warehousePartOutput ->
-                (warehousePartOutput.getWarehouseName().equals(warehouse.getName()))).toList();
+        List<WarehousePartOutput> warehousePartList = warehousePartService
+                .findAllWarehousesParts()
+                .stream()
+                .filter(warehousePartOutput -> (warehousePartOutput.getWarehouseName().equals(warehouse.getName())))
+                .toList();
 
         Map<Part, Integer> map = new HashMap<>();
 
