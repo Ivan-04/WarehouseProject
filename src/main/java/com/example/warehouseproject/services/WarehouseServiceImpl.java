@@ -3,6 +3,7 @@ package com.example.warehouseproject.services;
 import com.example.warehouseproject.exceptions.DuplicateEntityException;
 import com.example.warehouseproject.exceptions.EntityNotFoundException;
 import com.example.warehouseproject.exceptions.InvalidDataException;
+import com.example.warehouseproject.exceptions.UnauthorizedOperationException;
 import com.example.warehouseproject.models.*;
 import com.example.warehouseproject.models.dtos.*;
 import com.example.warehouseproject.repositories.WarehouseRepository;
@@ -131,6 +132,8 @@ public class WarehouseServiceImpl implements WarehouseService {
             warehouse.setName(name);
 
             warehouseRepository.save(warehouse);
+        } else {
+            throw new UnauthorizedOperationException("User is not owner or manager!");
         }
     }
 

@@ -3,6 +3,8 @@ package com.example.warehouseproject.WarehouseServiceApplicationTests;
 import com.example.warehouseproject.HelperClass;
 import com.example.warehouseproject.exceptions.DuplicateEntityException;
 import com.example.warehouseproject.exceptions.EntityNotFoundException;
+import com.example.warehouseproject.exceptions.InvalidDataException;
+import com.example.warehouseproject.exceptions.UnauthorizedOperationException;
 import com.example.warehouseproject.models.User;
 import com.example.warehouseproject.models.Warehouse;
 import com.example.warehouseproject.models.dtos.WarehouseInput;
@@ -10,6 +12,7 @@ import com.example.warehouseproject.models.dtos.WarehouseOutput;
 import com.example.warehouseproject.models.dtos.WarehouseOutputId;
 import com.example.warehouseproject.repositories.WarehousePartsRepository;
 import com.example.warehouseproject.repositories.WarehouseRepository;
+import com.example.warehouseproject.services.UserServiceImpl;
 import com.example.warehouseproject.services.WarehouseServiceImpl;
 import com.example.warehouseproject.services.contracts.PartService;
 import com.example.warehouseproject.services.contracts.WarehousePartService;
@@ -43,6 +46,9 @@ public class WarehouseServiceImplTests {
 
     @Mock
     WarehousePartService warehousePartService;
+
+    @Mock
+    UserServiceImpl userService;
 
     @Mock
     ConversionService conversionService;
@@ -249,61 +255,57 @@ public class WarehouseServiceImplTests {
 
     }
 
+    @Test
+    public void changeNameOdWarehouse_Should_Pass_If_WeDoIt_Correctly(){
+        User user = HelperClass.createMockUserOwner();
+
+        Warehouse warehouse = Warehouse.builder()
+                .warehouseId(1)
+                .name("Warehouse")
+                .build();
+
+        Mockito.when(userService.findUserEntityByEmail(user.getEmail())).thenReturn(user);
+
+        Mockito.when(mockRepository.findWarehouseEntityByWarehouseId(warehouse.getWarehouseId())).thenReturn(warehouse);
+
+        warehouseService.changeNameOfWarehouse(warehouse.getWarehouseId(), "Warehouse New", user.getEmail());
+
+        Mockito.verify(mockRepository, Mockito.times(1)).save(Mockito.any(Warehouse.class));
+    }
 
 
 
-//    @Test
-//    public void get_Should_Return_AllPartsOfWarehouse_WhenOptionsAreFulfilled() {
-//        WarehouseInput warehouseInput = new WarehouseInput();
-//        warehouseInput.setName("Warehouse 1");
-//        WarehouseOutputId id = warehouseService.createWarehouse(warehouseInput);
-//        Warehouse currWarehouse = warehouseService.findWarehouseEntityByName("Warehouse 1");
-//        currWarehouse.setWarehouseId(1);
-//
-//        Part part = Part.builder()
-//                .partId(1)
-//                .title("Part")
-//                .price(10.50)
-//                .description("wertyuioplkjhgfds")
-//                .createdAt(LocalDateTime.now())
-//                .build();
-//
-//        Warehouse warehouse = warehouseService.findWarehouseEntityById(1);
-//
-//        WarehousePart.builder()
-//                .id(1)
-//                .part(part)
-//                .warehouse(warehouse)
-//                .quantity(5)
-//                .build();
-//
-//        List<WarehousePartOutput> warehousePartListOutputs = warehousePartService.findAllWarehousesParts().stream().filter(warehousePart ->
-//                (warehousePart.getWarehouseName().equals(warehouse.getName()))).toList();
-//
-//
-//        Mockito.when(warehouseService.createWarehouse(warehouseInput))
-//                .thenReturn(id);
-//        Mockito.when(mockRepository.findWarehouseEntityByWarehouseId(1))
-//                .thenReturn(warehouse);
-//        Mockito.when(mockRepository.findWarehouseEntityByName("Warehouse 1"))
-//                .thenReturn(warehouse);
-//        Mockito.when(warehousePartService.findAllWarehousesParts())
-//                .thenReturn(warehousePartListOutputs);
-//        Mockito.when(mockPartService.getPartEntity(part.getTitle()))
-//                .thenReturn(part);
-//
-//        Map<Part, Integer> result = warehouseService.getAllPartsOfWarehouse(1);
-//
-//        assertNotNull(result);
-//        assertEquals(1, result.size());
-//        assertTrue(result.containsKey(part));
-//        assertEquals(5, result.get(part));
-//
-//        Mockito.verify(mockRepository, Mockito.times(1)).findWarehouseEntityByWarehouseId(1);
-//        Mockito.verify(mockRepository, Mockito.times(1)).findWarehouseEntityByName("Warehouse 1");
-//        Mockito.verify(warehousePartService, Mockito.times(1)).findAllWarehousesParts();
-//        Mockito.verify(mockPartService, Mockito.times(1)).getPartEntity(part.getTitle());
-//    }
+    @Test
+    public void changeNameOdWarehouse_Should_Throw_If_UserIsNot_Owner(){
+        User user = HelperClass.createMockUserUser();
+
+        Warehouse warehouse = Warehouse.builder()
+                .warehouseId(1)
+                .name("Warehouse")
+                .build();
+
+        Mockito.when(userService.findUserEntityByEmail(user.getEmail())).thenReturn(user);
+
+        Assertions.assertThrows(UnauthorizedOperationException.class, () ->
+                warehouseService.changeNameOfWarehouse(warehouse.getWarehouseId(), "Warehouse New", user.getEmail()));
+    }
 
 
+    @Test
+    public void changeNameOdWarehouse_Should_Throw_If_InputIsNotCorrect(){
+        User user = HelperClass.createMockUserOwner();
+
+        Warehouse warehouse = Warehouse.builder()
+                .warehouseId(1)
+                .name("Warehouse")
+                .build();
+
+        Mockito.when(userService.findUserEntityByEmail(user.getEmail())).thenReturn(user);
+
+        Assertions.assertThrows(InvalidDataException.class, () ->
+                warehouseService
+                        .changeNameOfWarehouse(warehouse.getWarehouseId(),
+                                "WarehouseeNewwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww",
+                                user.getEmail()));
+    }
 }
